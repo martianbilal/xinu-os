@@ -11,7 +11,7 @@ local	int newpid();
 pid32	create(
 	  void		*funcaddr,	/* Address of the function	*/
 	  uint32	ssize,		/* Stack size in bytes		*/
-	  pri16		priority,	/* Process priority > 0		*/
+	  pri16		priority,	/* Process priority > 0 */
 	  char		*name,		/* Name (for debugging)		*/
 	  uint32	nargs,		/* Number of args that follow	*/
 	  ...
@@ -99,13 +99,13 @@ pid32	create(
 
 
 /*------------------------------------------------------------------------
- *  create  -  Create a process to start running a function on x86
+ *  create2  -  Create a process to start running a function on x86 - Modified
  *------------------------------------------------------------------------
  */
 pid32	create2(
 	  void		*funcaddr,	/* Address of the function	*/
 	  uint32	ssize,		/* Stack size in bytes		*/
-	  pri16		priority,	/* Process priority > 0		*/
+	  pri16		priority,	/* Process priority > 0	=> if less than 0, then priority is parent priority plus 1	*/
 	  char		*name,		/* Name (for debugging)		*/
 	  uint32	nargs,		/* Number of args that follow	*/
 	  ...
@@ -118,6 +118,11 @@ pid32	create2(
 	int32		i;
 	uint32		*a;		/* Points to list of args	*/
 	uint32		*saddr;		/* Stack address		*/
+
+	if(priority == 0) {
+		// priority = parent priority plus 1
+		priority = proctab[getpid()].prprio + 1;
+	}
 
 	mask = disable();
 	if (ssize < MINSTK)
