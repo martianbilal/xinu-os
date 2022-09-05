@@ -139,6 +139,7 @@ pid32	create2(
 
 	/* Initialize process table entry for new process */
 	prptr->prstate = PR_SUSP;	/* Initial state is suspended	*/
+	// prptr->prstate = PR_READY;	/* Initial state is ready	*/
 	prptr->prprio = priority;
 	prptr->prstkbase = (char *)saddr;
 	prptr->prstklen = ssize;
@@ -192,6 +193,9 @@ pid32	create2(
 	*--saddr = 0;			/* %esi */
 	*--saddr = 0;			/* %edi */
 	*pushsp = (unsigned long) (prptr->prstkptr = (char *)saddr);
+	// insert(pid, readylist, prptr->prprio);
+	// resched();
+	ready(pid);
 	restore(mask);
 	return pid;
 }

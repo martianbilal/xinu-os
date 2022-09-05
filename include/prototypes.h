@@ -163,7 +163,7 @@ extern	status	insertd(pid32, qid16, int32);
 /* in file intr.S */
 extern	uint16	getirmask(void);
 
-/* in file intutils.S */
+/* in file intr.S */
 extern	intmask	disable(void);
 extern	void	enable(void);
 
