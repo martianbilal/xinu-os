@@ -39,6 +39,10 @@ extern	syscall	control(did32, int32, int32, int32);
 /* in file create.c */
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
 
+/* in file create.c	 */
+/* modified create syscall for lab1, task3.1 */
+extern	pid32	create2(void *, uint32, pri16, char *, uint32, ...);
+
 /* in file ctxsw.S */
 extern	void	ctxsw(void *, void *);
 
