@@ -83,6 +83,9 @@ void	nulluser()
 
 	//net_init();
 
+	/* call myhello to print hello message*/
+	myhello();
+
 	/* Create a process to finish startup and start main */
 
 	resume(create((void *)startup, INITSTK, INITPRIO,
