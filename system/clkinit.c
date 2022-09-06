@@ -2,6 +2,8 @@
 
 #include <xinu.h>
 
+uint32	fineclktime; /* 10 Miliseconds since boot */
+uint32	vfineclktime; /* Miliseconds since boot*/
 uint32	clktime;		/* Seconds since boot			*/
 uint32	ctr1000 = 0;		/* Milliseconds since boot		*/
 qid16	sleepq;			/* Queue of sleeping processes		*/
@@ -26,6 +28,8 @@ void	clkinit(void)
 	/* Initialize the time since boot to zero */
 
 	clktime = 0;
+	fineclktime = 0; 
+	vfineclktime = 0;
 
 	/* Set interrupt vector for the clock to invoke clkdisp */
 

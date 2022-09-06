@@ -9,6 +9,19 @@
 void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
+	static 	uint32 count10 = 10; 	/* Count to 10ms */
+
+
+	/* Decrement the ms counter and see if 10ms have passed */
+	if((--count10) <= 0) {
+		
+		/* 10 ms have passed */
+		
+		fineclktime++;
+
+		/* Reset the local ms counter for next 10 ms */
+		count10 = 10;
+	}
 
 	/* Decrement the ms counter, and see if a second has passed */
 
