@@ -10,7 +10,7 @@ void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
 	static 	uint32 count10 = 10; 	/* Count to 10ms */
-	struct procent *prptr; /* Pointer to pro*/
+	struct procent *prptr; /* Pointer to proc*/
 
 
 	prptr = &proctab[getpid()];

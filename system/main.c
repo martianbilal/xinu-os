@@ -3,6 +3,7 @@
 #include <xinu.h>
 
 void sndA(void), sndB(void);
+void printClockCounters(void);
 
 process	main(void)
 {
@@ -36,9 +37,18 @@ process	main(void)
 	// }
 
 	kprintf("\nTest process running code of main():%d\n", getpid());
+	// printClockCounters();
+	// sleep(5);
+	// printClockCounters();
 
 	return OK;
     
+}
+
+void printClockCounters(void){
+	kprintf("\nfineclkcounter : %u\n", fineclkcounter);
+	kprintf("\nvfineclkcounter : %u\n", vfineclkcounter);
+	return;
 }
 
 /*------------------------------------------------------------------------
