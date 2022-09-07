@@ -10,7 +10,10 @@ void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
 	static 	uint32 count10 = 10; 	/* Count to 10ms */
+	struct procent *prptr; /* Pointer to pro*/
 
+
+	prptr = &proctab[getpid()];
 
 	/* Decrement the ms counter and see if 10ms have passed */
 	if((--count10) <= 0) {
@@ -53,6 +56,7 @@ void	clkhandler()
 
 	if((--preempt) <= 0) {
 		preempt = QUANTUM;
+		prptr->prcphungry = 0;
 		resched();
 	}
 }
