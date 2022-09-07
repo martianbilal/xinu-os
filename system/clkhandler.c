@@ -20,7 +20,7 @@ void	clkhandler()
 		
 		/* 10 ms have passed */
 		
-		fineclktime++;
+		fineclkcounter++;
 
 		/* Reset the local ms counter for next 10 ms */
 		count10 = 10;
