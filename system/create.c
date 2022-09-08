@@ -45,6 +45,7 @@ pid32	create(
 	prptr->prstklen = ssize;
 	prptr->prname[PNMLEN-1] = NULLCH;
 	prptr->prcpuhungry = 0;
+	prptr->prbirthday = fineclkcounter;
 	
 	for (i=0 ; i<PNMLEN-1 && (prptr->prname[i]=name[i])!=NULLCH; i++)
 		;
