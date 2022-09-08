@@ -33,6 +33,9 @@ extern	void	clkdisp(void);
 /* in file close.c */
 extern	syscall	close(did32);
 
+/* in file lifetime.c */
+extern syscall lifetime(pid32 pid);
+
 /* in file control.c */
 extern	syscall	control(did32, int32, int32, int32);
 
