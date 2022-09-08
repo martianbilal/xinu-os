@@ -23,6 +23,7 @@ void	clkhandler()
 		fineclkcounter++;
 
 		/* Reset the local ms counter for next 10 ms */
+		
 		count10 = 10;
 	}
 
@@ -53,10 +54,15 @@ void	clkhandler()
 
 	/* Decrement the preemption counter, and reschedule when the */
 	/*   remaining time reaches zero			     */
+	// kprintf("[Debug] [%d] preempt value : %d", getpid(), preempt);
 
 	if((--preempt) <= 0) {
 		preempt = QUANTUM;
-		prptr->prcphungry = 0;
+		if( getpid() != 0 ) {
+			// kprintf("[Debug] [%d] increment /prcpuhungry\n", getpid());
+		}
+		// kprintf("[Debug] [%d] preempt : %d", getpid(), preempt);
+		prptr->prcpuhungry = prptr->prcpuhungry + 1;
 		resched();
 	}
 }

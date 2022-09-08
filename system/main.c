@@ -2,8 +2,15 @@
 
 #include <xinu.h>
 
+void prcpuhungryPrint(void);
+void cpuhungryProc(void);
+void iohungryProc(void);
+
+
 void sndA(void), sndB(void);
 void printClockCounters(void);
+
+
 
 process	main(void)
 {
@@ -36,18 +43,26 @@ process	main(void)
 	// 	resume(create(shell, 4096, 20, "shell", 1, CONSOLE));
 	// }
 
-	kprintf("\nTest process running code of main():%d\n", getpid());
-	// printClockCounters();
+	kprintf("\nTest process running code of main():%d\n", currpid);
+	
+	printClockCounters();
 	// sleep(5);
 	// printClockCounters();
+
+	resume(create(cpuhungryProc, 1024, 20, "cpuhungry", 0));
+	resume(create(iohungryProc, 1024, 20, "iohungry", 0));
+
+	kprintf("\n[Debug] Running experiment to check the effectiveness of the prcpuhungry\n");
+
 
 	return OK;
     
 }
 
 void printClockCounters(void){
-	kprintf("\nfineclkcounter : %u\n", fineclkcounter);
 	kprintf("\nvfineclkcounter : %u\n", vfineclkcounter);
+	kprintf("\nfineclkcounter : %u\n", fineclkcounter);
+	// kprintf("\nclktime : %u\n", clktime)
 	return;
 }
 
@@ -70,4 +85,59 @@ void sndB(void)
 {
 	while(1)
 		kputc('B');
+}
+
+
+/*------------------------------------------------------------------------
+* prcpuhungryPrint - print the prcpuhungry values for the current process 
+*------------------------------------------------------------------------
+*/
+void prcpuhungryPrint(void)
+{
+	struct procent *prptr; /* Pointer to process */
+
+	prptr = &proctab[currpid];
+
+	kprintf("\n[Debug] [%d] prcpuhungry : %u\n", currpid, prptr->prcpuhungry);
+}
+
+/*------------------------------------------------------------------------
+* cpuhungryProc - is cpu hungry lol
+*------------------------------------------------------------------------
+*/
+void cpuhungryProc(void)
+{
+	kprintf("\n[%d] cpuhungrycalled\n", currpid);
+	prcpuhungryPrint();
+	int a = 1;
+	int i = 0;
+	int b = 1;
+
+	while(i < 5000000) {
+		a = (a + 1) * 20 / a;
+		b = a + b * b / 2 / 4 * a ;
+		i = i + 1;
+	}
+	prcpuhungryPrint();
+
+	return;
+}
+
+/*------------------------------------------------------------------------
+* iohungryProc - is io hungry :)
+*------------------------------------------------------------------------
+*/
+void iohungryProc(void)
+{
+	kprintf("\n[%d] iohungrycalled\n", currpid);
+	prcpuhungryPrint();
+	int i = 0;
+
+	while(i < 5000000) {
+		kprintf("");
+		i = i + 1;
+	}
+	prcpuhungryPrint();
+	
+	return;
 }
