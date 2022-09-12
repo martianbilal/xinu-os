@@ -43,10 +43,16 @@ extern int addtwo(int x, int y);
 extern int addfour(int x, int y, int a, int b);
 
 /* in files greaterfirst.c */
-extern int greaterfirst(int x, int y);
+extern	int	greaterfirst(int x, int y);
+
+/* in files greaterfirst1.c */
+extern	int	greaterfirst1(int x, int y);
+
+/* in files greaterfirst2.c */
+extern	int	greaterfirst2(int x, int y);
 
 /* in files testgreaterfirst.S */
-extern int testgreaterfirst(int x, int y);
+extern	int	testgreaterfirst(int x, int y);
 
 /* in file control.c */
 extern	syscall	control(did32, int32, int32, int32);

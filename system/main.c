@@ -56,7 +56,7 @@ process	main(void)
 	
 
 	kprintf("Test result of addfour : 5 + 34 + 234 + 3 = %d\n", addfour(5,34, 234, 3));
-	kprintf("Test result of testgreaterfirst : 5,64 = %d\n", testgreaterfirst(5,64));
+	// kprintf("Test result of testgreaterfirst : 5,64 = %d\n", testgreaterfirst(5,64));
 	kprintf("Test result of testgreaterfirst : 64,5 = %d\n", testgreaterfirst(65,5));
 	kprintf("Test result of testgreaterfirst : 5,5 = %d\n", testgreaterfirst(5,5));
 
