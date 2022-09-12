@@ -53,7 +53,9 @@ process	main(void)
 	resume(create(iohungryProc, 1024, 20, "iohungry", 0));
 
 	kprintf("\n[Debug] Running experiment to check the effectiveness of the prcpuhungry\n");
+	
 
+	kprintf("Test result of addfour : 5 + 34 + 234 + 3 = %d", addfour(5,34, 234, 3));
 
 	return OK;
     
