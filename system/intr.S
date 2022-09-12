@@ -99,6 +99,10 @@ Xtrap:
 
 	.globl	_Xint0			/* Divide error			*/
 _Xint0:
+	movl (%esp), %eax
+	add  $0x8, %eax
+	movl %eax, (%esp)
+	iret
 	pushl	%ebp
 	movl	%esp,%ebp
 	pushal

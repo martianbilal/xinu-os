@@ -14,7 +14,7 @@ void printClockCounters(void);
 
 process	main(void)
 {
-    
+    int test = 0; 
     	// kprintf("\nHello World!\n");
     	// kprintf("\nI'm the first XINU app and running function main() in system/main.c.\n");
     	// kprintf("\nI was created by nulluser() in system/initialize.c using create().\n");
@@ -59,6 +59,12 @@ process	main(void)
 	// kprintf("Test result of testgreaterfirst : 5,64 = %d\n", testgreaterfirst(5,64));
 	kprintf("Test result of testgreaterfirst : 64,5 = %d\n", testgreaterfirst(65,5));
 	kprintf("Test result of testgreaterfirst : 5,5 = %d\n", testgreaterfirst(5,5));
+
+	kprintf("Dividing by zero! \n");
+	
+	// kprintf("1 / 0 = %d", 1/0);
+	test = 1 / test;
+	kprintf("We have moved to next instruction!\n");
 
 	return OK;
     

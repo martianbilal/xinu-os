@@ -11,7 +11,7 @@ testgreaterfirst:
         pushl   %ebx
         pushl   %eax
         mov     $0x0, %eax
-        call    greaterfirst2
+        call    greaterfirst
         popl     %ecx
         popl     %ebx
         popl    %ebx
