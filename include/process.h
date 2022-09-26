@@ -17,6 +17,13 @@
 #define	PR_WAIT		6	/* Process is on semaphore queue	*/
 #define	PR_RECTIM	7	/* Process is receiving with timeout	*/
 
+
+
+/* System call numbers */
+#define SYSGETPID 20
+#define SYSMEMGET 21
+#define SYSCHPRIO 22
+
 /* Miscellaneous process definitions */
 
 #define	PNMLEN		16	/* Length of process "name"		*/
