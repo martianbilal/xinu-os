@@ -67,4 +67,4 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
-extern	uint32 *kstack[];	/* Current process' kernel stack */
+// extern	uint32 *kstack[];	/* Current process' kernel stack */

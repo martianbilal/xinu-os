@@ -13,3 +13,5 @@
 	.set	IMR2,ICU2 + 1	/* Interrupt Mask Register for #2	*/
 
 	.set	EOI,0x20	/* non-specific end of interrupt	*/
+
+	.set 	NPROC,0x8	/* Max number of processes in system */ 

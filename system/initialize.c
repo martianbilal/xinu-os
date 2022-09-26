@@ -20,7 +20,7 @@ local	process startup(void);	/* Process to finish startup tasks	*/
 struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
-uint32 *kstack[NPROC];
+// uint32 *kstack[NPROC];
 
 /* Active system status */
 
@@ -199,6 +199,9 @@ static	void	sysinit()
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
 	currpid = NULLPROC;
+
+	/* Kernel Stack for null process */
+	kstack[currpid] = (uint32 *)getstk(KSTK);
 	
 	/* Initialize semaphores */
 

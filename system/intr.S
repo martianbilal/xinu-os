@@ -12,6 +12,22 @@
 	.globl	spurious_irq7
 	.globl	spurious_irq15
 
+
+/*
+	kproc array for storing the kernel stack address for 
+	each process 
+*/
+
+#define KSTACK_BYTES (NPROC * 4)
+	.data
+
+	.align 16
+	.globl kstack
+kstack:	.space	KSTACK_BYTES
+kstackr:	.word	(KSTACK_BYTES-1)
+	.long kstack
+
+
 /*------------------------------------------------------------------------
  * disable  -  Disable interrupts and return the previous state
  *------------------------------------------------------------------------
@@ -559,14 +575,23 @@ _Xint45:
 
 	.globl  _Xint46			/* available for ext. interrupt	*/
 _Xint46:
-	cli
 	pushl	%ebp
 	movl	%esp,%ebp
 	pushal
 	movl	%esp, %eax
 	pushl	%eax
 	pushl	$46
+seg_switch:					/* segment switch */
+	movl	$0x20, %eax		/* DS descriptor 4 */
+	movw	%ax, %ds
+	movw	%ax, %es
+	movw	%ax, %fs
+	movw	%ax, %gs
+	movl	$0x20, %eax		/* DS descriptor 4 */
+	movw	%ax, %ss
+stack_change:
 	jmp	Xtrap
+
 
 /*------------------------------------------------------------------------
  * _Xint? - array of exception/interrupt entry points that are

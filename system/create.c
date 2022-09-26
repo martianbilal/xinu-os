@@ -24,6 +24,7 @@ pid32	create(
 	int32		i;
 	uint32		*a;		/* Points to list of args	*/
 	uint32		*saddr;		/* Stack address		*/
+	uint32 		*kaddr; 	/* Kernel Stack address */
 
 	mask = disable();
 	if (ssize < MINSTK)
@@ -93,6 +94,16 @@ pid32	create(
 	*--saddr = 0;			/* %esi */
 	*--saddr = 0;			/* %edi */
 	*pushsp = (unsigned long) (prptr->prstkptr = (char *)saddr);
+
+
+	/* Add kstack entry for the pid */
+	if ((kaddr = (uint32 *)getstk(KSTK)) == (uint32 *)SYSERR ) {
+		restore(mask);
+		return SYSERR;
+	}
+	kstack[pid] = kaddr;
+	kprintf("[pid : %d]\tkstack[pid]:\t%d \n", pid, kstack[pid]);
+
 	restore(mask);
 	return pid;
 }
