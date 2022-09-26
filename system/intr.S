@@ -559,6 +559,7 @@ _Xint45:
 
 	.globl  _Xint46			/* available for ext. interrupt	*/
 _Xint46:
+	cli
 	pushl	%ebp
 	movl	%esp,%ebp
 	pushal
