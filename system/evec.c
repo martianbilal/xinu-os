@@ -101,6 +101,10 @@ int32	set_evec(uint32 xnum, uint32 handler)
 	pidt->igd_present = 1;
 	pidt->igd_hoffset = handler >> 16;
 
+	if(xnum == 46){
+		pidt->igd_segsel = 0x18;	/* Second Kernel code segment */
+	}
+
 	if (xnum > 31 && xnum < 48) {
 		/* Enable the interrupt in the global IR mask */
 		xnum -= 32;
