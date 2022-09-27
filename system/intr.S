@@ -563,7 +563,11 @@ _Xint45:
 	pushl	$45
 	jmp	Xtrap
 
-	.globl call_getmem /* TODO : make it private  */
+call_chprio: 
+	/* check with compare syscall id*/
+	call chprio
+	jmp ret_from_chprio
+
 call_getmem: 
 	/* check with compare syscall id*/
 	call getmem
@@ -612,6 +616,14 @@ movl 28(%esi), %ebx
 pushl %ebx
 cmp $SYSMEMGET, %eax 
 je call_getmem
+
+movl 32(%esi), %ebx
+pushl %ebx
+cmp $SYSCHPRIO, %eax
+je call_chprio
+
+ret_from_chprio:
+popl %ebx
 
 ret_from_getmem:
 popl %ebx

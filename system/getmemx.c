@@ -11,7 +11,6 @@ char  	*getmemx(
 	)
 {
 	char* ret=0;
-	kprintf("====> getmemx called with {%u} bytes", (uint32)nbytes);
 
 
 	// __asm__ volatile (
@@ -39,6 +38,5 @@ char  	*getmemx(
 	// __asm__ __volatile__ ("movl %%eax, %0;":"=m"(ret)::"memory");
 
 	// __asm__ __volatile__ ("nop");
-	kprintf("[DEBUG] [getmemx] ++> ret : %u\n", ret);
 	return ret;
 }

@@ -11,18 +11,21 @@ pri16	chpriox(
 	  pri16		newprio		/* New priority			*/
 	)
 {
-	intmask	mask;			/* Saved interrupt mask		*/
-	struct	procent *prptr;		/* Ptr to process's table entry	*/
-	pri16	oldprio;		/* Priority to return		*/
+	int ret = 0;
+	__asm__ __volatile__ (
+		"movl %[SYS_NUM], %%eax;"
+		"movl %[id], %%ebx;"
+		"pushl %%ebx;"
+		"movl %[prio], %%ebx;"
+		"pushl %%ebx;"
+		"int $46;"
+		"mov %%esi, %%eax;"
+		"mov %%eax, %[retval];"
+		"popl %%ebx"
+		:[retval] "=rm"(ret)
+		:[SYS_NUM] "0"(SYSCHPRIO), [id] "rm"((uint32)pid), [prio] "rm"(newprio)
+		:"eax"
+	);
 
-	mask = disable();
-	if (isbadpid(pid)) {
-		restore(mask);
-		return (pri16) SYSERR;
-	}
-	prptr = &proctab[pid];
-	oldprio = prptr->prprio;
-	prptr->prprio = newprio;
-	restore(mask);
-	return oldprio;
+	return (uint16)ret;
 }

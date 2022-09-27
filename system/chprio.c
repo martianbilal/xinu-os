@@ -15,6 +15,7 @@ pri16	chprio(
 	struct	procent *prptr;		/* Ptr to process's table entry	*/
 	pri16	oldprio;		/* Priority to return		*/
 
+	kprintf("[Debug]\tchprio called with :-> [1st]{%u} | [2nd]{%u}\n", pid, newprio);
 	mask = disable();
 	if (isbadpid(pid)) {
 		restore(mask);

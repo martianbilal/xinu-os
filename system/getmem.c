@@ -15,12 +15,6 @@ char  	*getmem(
 
 	mask = disable();
 
-	kprintf("[DEBUG] ==> getmem called with nbytes : %u\n", nbytes);
-	kprintf("[DEBUG] ==> -0[nbytes] : %u\n", (uint32)(*((&nbytes) - 0)));
-	kprintf("[DEBUG] ==> -4[nbytes] : %u\n", (uint32)(*((&nbytes) - 4)));
-	kprintf("[DEBUG] ==> -8[nbytes] : %u\n", (uint32)(*((&nbytes) - 8)));
-	kprintf("[DEBUG] ==> +4[nbytes] : %u\n", (uint32)(*((&nbytes) + 4)));
-	kprintf("[DEBUG] ==> +8[nbytes] : %u\n", (uint32)(*((&nbytes) + 8)));
 	if (nbytes == 0) {
 		restore(mask);
 		return (char *)SYSERR;

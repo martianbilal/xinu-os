@@ -33,7 +33,10 @@ process	main(void)
 	pid = getpidx();
 	kprintf("\n pid : %d\n", pid);
 
-	ret_addr = (uint32)getmemx(4);
+	ret_addr = (uint32)getmemx(2);
+	kprintf("\n ret_addr : %d\n", ret_addr);
+
+	ret_addr = (uint32)chpriox(currpid, 20);
 	kprintf("\n ret_addr : %d\n", ret_addr);
 	
 
