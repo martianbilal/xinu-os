@@ -18,16 +18,6 @@
 	each process 
 */
 
-#define KSTACK_BYTES (NPROC * 4)
-	.data
-
-	.align 16
-	.globl kstack
-kstack:	.space	KSTACK_BYTES
-kstackr:	.word	(KSTACK_BYTES-1)
-	.long kstack
-
-
 /*------------------------------------------------------------------------
  * disable  -  Disable interrupts and return the previous state
  *------------------------------------------------------------------------
@@ -573,24 +563,62 @@ _Xint45:
 	pushl	$45
 	jmp	Xtrap
 
+call_getpid: 
+	/* check with compare syscall id*/
+	call getpid
+	jmp ret_from_getpid
+
+
 	.globl  _Xint46			/* available for ext. interrupt	*/
 _Xint46:
-	pushl	%ebp
-	movl	%esp,%ebp
-	pushal
-	movl	%esp, %eax
-	pushl	%eax
-	pushl	$46
-seg_switch:					/* segment switch */
-	movl	$0x20, %eax		/* DS descriptor 4 */
-	movw	%ax, %ds
-	movw	%ax, %es
-	movw	%ax, %fs
-	movw	%ax, %gs
-	movl	$0x20, %eax		/* DS descriptor 4 */
-	movw	%ax, %ss
-stack_change:
-	jmp	Xtrap
+	pushl %edx
+	pushl %ecx
+	pushl %ebp
+	pushl %esi
+	
+	movl %esp, %esi
+
+segment_udpate:
+	movl	$0x20, %edx	/* DS descriptor 3 */
+	movw	%dx, %ds
+	movl	$0x20, %edx	/* DS descriptor 4 */
+	movw	%dx, %ss
+
+stack_update:
+	movl $kstack, %ecx
+	movl 12(%ecx), %ecx 
+	movl %ecx, %esp
+
+
+user_esp_save:
+	pushl %esi
+
+cmp $SYSGETPID, %eax
+jmp call_getpid
+
+ret_from_getmem:
+ret_from_getpid:
+popl %esp
+
+/* make getpid work before moving onto the next funciton */
+
+
+
+segment_udpate_to_user:
+	movl	$0x10, %edx	/* DS descriptor 3 */
+	movw	%dx, %ds
+
+	movl	$0x10, %edx	/* DS descriptor 4 */
+	movw	%dx, %ss
+
+
+stack_update_to_user:
+	popl %esi
+	popl %ebp
+	popl %ecx
+	popl %edx
+	movl %eax, %esi
+	iret
 
 
 /*------------------------------------------------------------------------

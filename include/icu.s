@@ -15,3 +15,7 @@
 	.set	EOI,0x20	/* non-specific end of interrupt	*/
 
 	.set 	NPROC,0x8	/* Max number of processes in system */ 
+	
+	.set	SYSGETPID,0x14
+	.set	SYSMEMGET,0x15
+	.set	SYSCHPRIO,0x16

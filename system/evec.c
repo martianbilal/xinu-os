@@ -168,7 +168,7 @@ void	trap (
 	/* Disable interrupts */
 
 	mask = disable();
-
+	// stacktrace(getpid());
 	/* Get the location of saved registers */
 
 	regs = sp;

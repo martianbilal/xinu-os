@@ -15,7 +15,7 @@ process	main(void)
 
 	/* Run the Xinu shell */
 
-	recvclr();
+	// recvclr();
 	// resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
 
 	// /* Wait for shell to exit and recreate it */
@@ -27,7 +27,8 @@ process	main(void)
 	// 	resume(create(shell, 4096, 20, "shell", 1, CONSOLE));
 	// }
 
-	kprintf("\nkstack[0] : %d\n", kstack[0]);
+	kprintf("\nkstack[getpid] : %d\n", kstack[getpid()]);
+	kprintf("\ngetpid : %d\n", getpidxasm());
 
 	return OK;
     

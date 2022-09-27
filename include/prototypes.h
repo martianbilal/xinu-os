@@ -21,6 +21,10 @@ extern	pri16	chprio(pid32, pri16);
 /* in file chpriox.c */
 extern	pri16	chpriox(pid32, pri16);
 
+/* in file getpidxasm.S */
+extern	uint32	getpidxasm(void);
+
+
 /* in file clkupdate.S */
 extern	uint32	clkcount(void);
 
