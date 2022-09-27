@@ -563,6 +563,12 @@ _Xint45:
 	pushl	$45
 	jmp	Xtrap
 
+	.globl call_getmem /* TODO : make it private  */
+call_getmem: 
+	/* check with compare syscall id*/
+	call getmem
+	jmp ret_from_getmem
+
 call_getpid: 
 	/* check with compare syscall id*/
 	call getpid
@@ -571,6 +577,7 @@ call_getpid:
 
 	.globl  _Xint46			/* available for ext. interrupt	*/
 _Xint46:
+	cli
 	pushl %edx
 	pushl %ecx
 	pushl %ebp
@@ -586,7 +593,10 @@ segment_udpate:
 
 stack_update:
 	movl $kstack, %ecx
-	movl 12(%ecx), %ecx 
+	movl currpid, %ebx
+	shl $2, %ebx
+	addl %ebx, %ecx
+	movl  (%ecx), %ecx 
 	movl %ecx, %esp
 
 
@@ -594,9 +604,18 @@ user_esp_save:
 	pushl %esi
 
 cmp $SYSGETPID, %eax
-jmp call_getpid
+je call_getpid
+
+
+/* [WARNING] [BILAL] 28 MIGHT CHANGE WITH THE SAVED REGISTER */
+movl 28(%esi), %ebx
+pushl %ebx
+cmp $SYSMEMGET, %eax 
+je call_getmem
 
 ret_from_getmem:
+popl %ebx
+
 ret_from_getpid:
 popl %esp
 
@@ -617,6 +636,7 @@ stack_update_to_user:
 	popl %ebp
 	popl %ecx
 	popl %edx
+	sti
 	movl %eax, %esi
 	iret
 

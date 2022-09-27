@@ -10,41 +10,35 @@ char  	*getmemx(
 	  uint32	nbytes		/* Size of memory requested	*/
 	)
 {
-	intmask	mask;			/* Saved interrupt mask		*/
-	struct	memblk	*prev, *curr, *leftover;
+	char* ret=0;
+	kprintf("====> getmemx called with {%u} bytes", (uint32)nbytes);
 
-	mask = disable();
-	if (nbytes == 0) {
-		restore(mask);
-		return (char *)SYSERR;
-	}
 
-	nbytes = (uint32) roundmb(nbytes);	/* Use memblk multiples	*/
+	// __asm__ volatile (
+	// 	"int $46;"
+	// 	:"=am"((pid32)ret)
+	// 	:"0"(SYSGETPID)
+	// );
 
-	prev = &memlist;
-	curr = memlist.mnext;
-	while (curr != NULL) {			/* Search free list	*/
+	__asm__ __volatile__ (
+		"movl %[SYS_NUM], %%eax;"
+		"movl %[bytes], %%ebx;"
+		"pushl %%ebx;"
+		"int $46;"
+		"mov %%esi, %%eax;"
+		"mov %%eax, %[retval];"
+		"popl %%ebx"
+		:[retval] "=rm"(ret)
+		:[SYS_NUM] "0"(SYSMEMGET), [bytes] "rm"((uint32)nbytes)
+		:"eax"
+	);
 
-		if (curr->mlength == nbytes) {	/* Block is exact match	*/
-			prev->mnext = curr->mnext;
-			memlist.mlength -= nbytes;
-			restore(mask);
-			return (char *)(curr);
 
-		} else if (curr->mlength > nbytes) { /* Split big block	*/
-			leftover = (struct memblk *)((uint32) curr +
-					nbytes);
-			prev->mnext = leftover;
-			leftover->mnext = curr->mnext;
-			leftover->mlength = curr->mlength - nbytes;
-			memlist.mlength -= nbytes;
-			restore(mask);
-			return (char *)(curr);
-		} else {			/* Move to next block	*/
-			prev = curr;
-			curr = curr->mnext;
-		}
-	}
-	restore(mask);
-	return (char *)SYSERR;
+	// __asm__ __volatile__ ("movl %0, %%eax;" ::"I"(SYSGETPID):"eax");
+	// __asm__ __volatile__ ("int $46;" :"=m"(ret)::"eax");
+	// __asm__ __volatile__ ("movl %%eax, %0;":"=m"(ret)::"memory");
+
+	// __asm__ __volatile__ ("nop");
+	kprintf("[DEBUG] [getmemx] ++> ret : %u\n", ret);
+	return ret;
 }

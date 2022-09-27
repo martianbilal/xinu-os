@@ -4,7 +4,8 @@
 
 process	main(void)
 {
-    
+	int pid = 0;
+	uint32 ret_addr = 0; 
     	kprintf("\nHello World!\n");
     	kprintf("\nI'm the first XINU app and running function main() in system/main.c.\n");
     	kprintf("\nI was created by nulluser() in system/initialize.c using create().\n");
@@ -28,7 +29,13 @@ process	main(void)
 	// }
 
 	kprintf("\nkstack[getpid] : %d\n", kstack[getpid()]);
-	kprintf("\ngetpid : %d\n", getpidxasm());
+	// kprintf("\ngetpid : %d\n", getpidx());
+	pid = getpidx();
+	kprintf("\n pid : %d\n", pid);
+
+	ret_addr = (uint32)getmemx(4);
+	kprintf("\n ret_addr : %d\n", ret_addr);
+	
 
 	return OK;
     

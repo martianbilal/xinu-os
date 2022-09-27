@@ -10,5 +10,6 @@ pid32	getpid(void)
 {
 	kprintf("======getpid called=====\n");
 	kprintf("currpid\t:\t%d\n", currpid);
+
 	return (currpid);
 }
