@@ -129,7 +129,6 @@ local process	startup(void)
 	//							ipaddr);
 	//}
 
-	kprintf("started startup ____ \n");
 
 	/* Create a process to execute function main() */
 

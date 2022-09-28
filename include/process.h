@@ -23,6 +23,7 @@
 #define SYSGETPID 20
 #define SYSMEMGET 21
 #define SYSCHPRIO 22
+#define SYSUSERCPU 23
 
 /* Miscellaneous process definitions */
 

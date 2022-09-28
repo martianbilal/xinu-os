@@ -573,6 +573,11 @@ call_getmem:
 	call getmem
 	jmp ret_from_getmem
 
+call_usercpu: 
+	/* check with compare syscall id*/
+	call usercpu
+	jmp ret_from_getmem
+
 call_getpid: 
 	/* check with compare syscall id*/
 	call getpid
@@ -616,6 +621,9 @@ movl 28(%esi), %ebx
 pushl %ebx
 cmp $SYSMEMGET, %eax 
 je call_getmem
+
+cmp $SYSUSERCPU, %eax
+je call_usercpu
 
 movl 32(%esi), %ebx
 pushl %ebx
