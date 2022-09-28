@@ -129,6 +129,8 @@ local process	startup(void)
 	//							ipaddr);
 	//}
 
+	kprintf("started startup ____ \n");
+
 	/* Create a process to execute function main() */
 
 	resume(create((void *)main, INITSTK, INITPRIO,
@@ -198,10 +200,14 @@ static	void	sysinit()
 	prptr->prstkbase = getstk(NULLSTK);
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
+	/* prusercpu value for the nullprocess */
+	prptr->prusercpu = 0;
 	currpid = NULLPROC;
 
 	/* Kernel Stack for null process */
 	kstack[currpid] = (uint32 *)getstk(KSTK);
+
+	
 	
 	/* Initialize semaphores */
 

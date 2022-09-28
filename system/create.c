@@ -50,6 +50,7 @@ pid32	create(
 	prptr->prsem = -1;
 	prptr->prparent = (pid32)getpid();
 	prptr->prhasmsg = FALSE;
+	prptr->prusercpu = 0;	/* prusercpu value at the process creation */
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;
@@ -102,7 +103,8 @@ pid32	create(
 		return SYSERR;
 	}
 	kstack[pid] = kaddr;
-	kprintf("[pid : %d]\tkstack[pid]:\t%d \n", pid, kstack[pid]);
+
+	// kprintf("[pid : %d]\tkstack[pid]:\t%d \n", pid, kstack[pid]);
 
 	restore(mask);
 	return pid;

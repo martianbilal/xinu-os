@@ -39,6 +39,8 @@ process	main(void)
 	ret_addr = (uint32)chpriox(currpid, 20);
 	kprintf("\n ret_addr : %d\n", ret_addr);
 	
+	kprintf("\n cpuutilization : %u\n", cpuutil());
+
 
 	return OK;
     
