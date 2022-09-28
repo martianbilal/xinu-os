@@ -9,6 +9,7 @@
 void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
+<<<<<<< HEAD
 	static 	uint32 count10 = 10; 	/* Count to 10ms */
 	struct procent *prptr; /* Pointer to proc*/
 
@@ -26,7 +27,22 @@ void	clkhandler()
 		
 		count10 = 10;
 	}
+=======
+	struct procent *prptr;	/* Ptr to process table entry */
+>>>>>>> lab2
 
+
+	// if(currpid == 0){
+	// 	kprintf("[DEBUG] clkhandler on NULLPROC\n");
+
+	// }
+
+
+	prptr = &proctab[currpid];
+
+	prptr->prusercpu = prptr->prusercpu + 1;
+
+	vfineclkcounter++;
 	/* Decrement the ms counter, and see if a second has passed */
 
 	if((--count1000) <= 0) {

@@ -35,6 +35,7 @@ uint16	girmask;
 
 #define NID		48	/* Number of interrupt descriptors	*/
 #define	IGDT_TRAPG	15	/* Trap Gate				*/
+#define IGDT_INTERRUPTG 14	/*		Interrupt Gate	*/
 
 void	setirmask(void);	/* Set interrupt mask			*/
 
@@ -101,6 +102,15 @@ int32	set_evec(uint32 xnum, uint32 handler)
 	pidt->igd_present = 1;
 	pidt->igd_hoffset = handler >> 16;
 
+	if(xnum == 46){
+		pidt->igd_segsel = 0x18;	/* Second Kernel code segment */
+	}
+
+	if(xnum == 46 || xnum == 32){
+		/* Interrupt Gates */
+		pidt->igd_type = IGDT_INTERRUPTG;
+	}
+
 	if (xnum > 31 && xnum < 48) {
 		/* Enable the interrupt in the global IR mask */
 		xnum -= 32;
@@ -158,7 +168,7 @@ void	trap (
 	/* Disable interrupts */
 
 	mask = disable();
-
+	// stacktrace(getpid());
 	/* Get the location of saved registers */
 
 	regs = sp;

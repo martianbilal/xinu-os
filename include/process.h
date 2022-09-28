@@ -4,7 +4,7 @@
 
 #ifndef NPROC
 #define	NPROC		8
-#endif		
+#endif
 
 /* Process state constants */
 
@@ -16,6 +16,14 @@
 #define	PR_SUSP		5	/* Process is suspended			*/
 #define	PR_WAIT		6	/* Process is on semaphore queue	*/
 #define	PR_RECTIM	7	/* Process is receiving with timeout	*/
+
+
+
+/* System call numbers */
+#define SYSGETPID 20
+#define SYSMEMGET 21
+#define SYSCHPRIO 22
+#define SYSUSERCPU 23
 
 /* Miscellaneous process definitions */
 
@@ -52,8 +60,12 @@ struct procent {		/* Entry in the process table		*/
 	umsg32	prmsg;		/* Message sent to this process		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
+<<<<<<< HEAD
 	uint32 	prcpuhungry;	/* count how many times process ran out of preempt */
 	uint32 	prbirthday /* fineclkcounter at the time of the creation of the process */
+=======
+	uint32 	prusercpu;	/* process utilization time in miliseconds */
+>>>>>>> lab2
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
@@ -62,3 +74,4 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
+extern	uint32 *kstack[];	/* Current process' kernel stack */

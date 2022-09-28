@@ -18,6 +18,13 @@ extern	status	bufinit(void);
 /* in file chprio.c */
 extern	pri16	chprio(pid32, pri16);
 
+/* in file chpriox.c */
+extern	pri16	chpriox(pid32, pri16);
+
+/* in file getpidxasm.S */
+extern	uint32	getpidxasm(void);
+
+
 /* in file clkupdate.S */
 extern	uint32	clkcount(void);
 
@@ -132,11 +139,18 @@ extern	pid32	getfirst(qid16);
 extern	pid32	getlast(qid16);
 extern	pid32	getitem(pid32);
 
+
 /* in file getmem.c */
 extern	char	*getmem(uint32);
 
+/* in file getmemx.c */
+extern	char	*getmemx(uint32);
+
 /* in file getpid.c */
 extern	pid32	getpid(void);
+
+/* in file getpidx.c */
+extern	pid32	getpidx(void);
 
 /* in file getprio.c */
 extern	syscall	getprio(pid32);
@@ -622,6 +636,16 @@ extern	void	udp_hton(struct netpacket *);
 
 /* in file unsleep.c */
 extern	syscall	unsleep(pid32);
+
+
+/* in file getmemx.c */
+extern	int32	usercpux(pid32);
+
+/* in file usercpu.c */
+extern syscall usercpu(pid32);
+
+/* in file cpuutil.c */
+extern unsigned short cpuutil(void);
 
 /* in file userret.c */
 extern	void	userret(void);
