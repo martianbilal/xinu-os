@@ -18,13 +18,6 @@ extern	status	bufinit(void);
 /* in file chprio.c */
 extern	pri16	chprio(pid32, pri16);
 
-/* in file chpriox.c */
-extern	pri16	chpriox(pid32, pri16);
-
-/* in file getpidxasm.S */
-extern	uint32	getpidxasm(void);
-
-
 /* in file clkupdate.S */
 extern	uint32	clkcount(void);
 
@@ -40,36 +33,11 @@ extern	void	clkdisp(void);
 /* in file close.c */
 extern	syscall	close(did32);
 
-/* in file lifetime.c */
-extern syscall lifetime(pid32 pid);
-
-/* in files addtwo.S */
-extern int addtwo(int x, int y);
-
-/* in files addfour.S */
-extern int addfour(int x, int y, int a, int b);
-
-/* in files greaterfirst.c */
-extern	int	greaterfirst(int x, int y);
-
-/* in files greaterfirst1.c */
-extern	int	greaterfirst1(int x, int y);
-
-/* in files greaterfirst2.c */
-extern	int	greaterfirst2(int x, int y);
-
-/* in files testgreaterfirst.S */
-extern	int	testgreaterfirst(int x, int y);
-
 /* in file control.c */
 extern	syscall	control(did32, int32, int32, int32);
 
 /* in file create.c */
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
-
-/* in file create.c	 */
-/* modified create syscall for lab1, task3.1 */
-extern	pid32	create2(void *, uint32, pri16, char *, uint32, ...);
 
 /* in file ctxsw.S */
 extern	void	ctxsw(void *, void *);
@@ -139,18 +107,11 @@ extern	pid32	getfirst(qid16);
 extern	pid32	getlast(qid16);
 extern	pid32	getitem(pid32);
 
-
 /* in file getmem.c */
 extern	char	*getmem(uint32);
 
-/* in file getmemx.c */
-extern	char	*getmemx(uint32);
-
 /* in file getpid.c */
 extern	pid32	getpid(void);
-
-/* in file getpidx.c */
-extern	pid32	getpidx(void);
 
 /* in file getprio.c */
 extern	syscall	getprio(pid32);
@@ -198,7 +159,7 @@ extern	status	insertd(pid32, qid16, int32);
 /* in file intr.S */
 extern	uint16	getirmask(void);
 
-/* in file intr.S */
+/* in file intutils.S */
 extern	intmask	disable(void);
 extern	void	enable(void);
 
@@ -487,9 +448,6 @@ extern	status	resched_cntl(int32);
 /* in file intutils.S */
 extern	void	restore(intmask);
 
-/* in file myhello.c*/
-extern	void	myhello(void);
-
 /* in file resume.c */
 extern	pri16	resume(pid32);
 
@@ -636,16 +594,6 @@ extern	void	udp_hton(struct netpacket *);
 
 /* in file unsleep.c */
 extern	syscall	unsleep(pid32);
-
-
-/* in file getmemx.c */
-extern	int32	usercpux(pid32);
-
-/* in file usercpu.c */
-extern syscall usercpu(pid32);
-
-/* in file cpuutil.c */
-extern unsigned short cpuutil(void);
 
 /* in file userret.c */
 extern	void	userret(void);

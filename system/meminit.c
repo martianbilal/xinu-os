@@ -30,7 +30,7 @@ struct __attribute__ ((__packed__)) sd {
 	unsigned char	sd_hibase;
 };
 
-#define	NGD			5	/* Number of global descriptor entries	*/
+#define	NGD			4	/* Number of global descriptor entries	*/
 #define FLAGS_GRANULARITY	0x80
 #define FLAGS_SIZE		0x40
 #define	FLAGS_SETTINGS		(FLAGS_GRANULARITY | FLAGS_SIZE)
@@ -43,10 +43,8 @@ struct sd gdt_copy[NGD] = {
 {       0xffff,          0,           0,      0x9a,         0xcf,        0, },
 /* 2nd, Kernel Data Segment */
 {       0xffff,          0,           0,      0x92,         0xcf,        0, },
-/* 3rd, Kernel Code Segment */
-{       0xffff,          0,           0,      0x9a,         0xcf,        0, },
-/* 4th, Kernel Data Segment */
-{       0xffff,          0,           0,      0x92,         0xcf,        0, }
+/* 3rd, Kernel Stack Segment */
+{       0xffff,          0,           0,      0x92,         0xcf,        0, },
 };
 
 extern	struct	sd gdt[];	/* Global segment table			*/
@@ -170,13 +168,7 @@ void	setsegs()
 	psd->sd_lolimit = ds_end;
 	psd->sd_hilim_fl = FLAGS_SETTINGS | ((ds_end >> 16) & 0xff);
 
-	psd = &gdt_copy[3];	/* Kernel code segment: identity map from address
-				   0 to etext */
-	np = ((int)&etext - 0 + PAGE_SIZE-1) / PAGE_SIZE;	/* Number of code pages */
-	psd->sd_lolimit = np;
-	psd->sd_hilim_fl = FLAGS_SETTINGS | ((np >> 16) & 0xff);
-
-	psd = &gdt_copy[4];	/* Kernel data segment */
+	psd = &gdt_copy[3];	/* Kernel stack segment */
 	psd->sd_lolimit = ds_end;
 	psd->sd_hilim_fl = FLAGS_SETTINGS | ((ds_end >> 16) & 0xff);
 

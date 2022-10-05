@@ -14,7 +14,6 @@ char  	*getmem(
 	struct	memblk	*prev, *curr, *leftover;
 
 	mask = disable();
-
 	if (nbytes == 0) {
 		restore(mask);
 		return (char *)SYSERR;

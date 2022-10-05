@@ -20,7 +20,6 @@ local	process startup(void);	/* Process to finish startup tasks	*/
 struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
-uint32 *kstack[NPROC];
 
 /* Active system status */
 
@@ -84,9 +83,6 @@ void	nulluser()
 
 	//net_init();
 
-	/* call myhello to print hello message*/
-	myhello();
-
 	/* Create a process to finish startup and start main */
 
 	resume(create((void *)startup, INITSTK, INITPRIO,
@@ -96,8 +92,7 @@ void	nulluser()
 	/*  something to run when no other process is ready to execute)	*/
 
 	while (TRUE) {
-		asm("hlt");	/* hlt the process during waiting */
-		// ;		/* Do nothing */
+		;		/* Do nothing */
 	}
 
 }
@@ -132,7 +127,6 @@ local process	startup(void)
 	//	kprintf("Obtained IP address  %s   (0x%08x)\n", str,
 	//							ipaddr);
 	//}
-
 
 	/* Create a process to execute function main() */
 
@@ -203,14 +197,7 @@ static	void	sysinit()
 	prptr->prstkbase = getstk(NULLSTK);
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
-	/* prusercpu value for the nullprocess */
-	prptr->prusercpu = 0;
 	currpid = NULLPROC;
-
-	/* Kernel Stack for null process */
-	kstack[currpid] = (uint32 *)getstk(KSTK);
-
-	
 	
 	/* Initialize semaphores */
 

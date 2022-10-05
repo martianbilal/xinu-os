@@ -12,12 +12,6 @@
 	.globl	spurious_irq7
 	.globl	spurious_irq15
 
-
-/*
-	kproc array for storing the kernel stack address for 
-	each process 
-*/
-
 /*------------------------------------------------------------------------
  * disable  -  Disable interrupts and return the previous state
  *------------------------------------------------------------------------
@@ -105,10 +99,6 @@ Xtrap:
 
 	.globl	_Xint0			/* Divide error			*/
 _Xint0:
-	movl (%esp), %eax
-	add  $0x8, %eax
-	movl %eax, (%esp)
-	iret
 	pushl	%ebp
 	movl	%esp,%ebp
 	pushal
@@ -567,103 +557,15 @@ _Xint45:
 	pushl	$45
 	jmp	Xtrap
 
-call_chprio: 
-	/* check with compare syscall id*/
-	call chprio
-	jmp ret_from_chprio
-
-call_getmem: 
-	/* check with compare syscall id*/
-	call getmem
-	jmp ret_from_getmem
-
-call_usercpu: 
-	/* check with compare syscall id*/
-	call usercpu
-	jmp ret_from_getmem
-
-call_getpid: 
-	/* check with compare syscall id*/
-	call getpid
-	jmp ret_from_getpid
-
-
 	.globl  _Xint46			/* available for ext. interrupt	*/
 _Xint46:
-	cli
-	pushl %edx
-	pushl %ecx
-	pushl %ebp
-	pushl %esi
-	
-	movl %esp, %esi
-
-segment_udpate:
-	movl	$0x20, %edx	/* DS descriptor 3 */
-	movw	%dx, %ds
-	movl	$0x20, %edx	/* DS descriptor 4 */
-	movw	%dx, %ss
-
-stack_update:
-	movl $kstack, %ecx
-	movl currpid, %ebx
-	shl $2, %ebx
-	addl %ebx, %ecx
-	movl  (%ecx), %ecx 
-	movl %ecx, %esp
-
-
-user_esp_save:
-	pushl %esi
-
-cmp $SYSGETPID, %eax
-je call_getpid
-
-
-/* [WARNING] [BILAL] 28 MIGHT CHANGE WITH THE SAVED REGISTER */
-movl 28(%esi), %ebx
-pushl %ebx
-cmp $SYSMEMGET, %eax 
-je call_getmem
-
-cmp $SYSUSERCPU, %eax
-je call_usercpu
-
-movl 32(%esi), %ebx
-pushl %ebx
-cmp $SYSCHPRIO, %eax
-je call_chprio
-
-ret_from_chprio:
-popl %ebx
-
-ret_from_getmem:
-popl %ebx
-
-ret_from_getpid:
-popl %esp
-
-/* make getpid work before moving onto the next funciton */
-
-
-
-segment_udpate_to_user:
-	movl	$0x10, %edx	/* DS descriptor 3 */
-	movw	%dx, %ds
-
-	movl	$0x10, %edx	/* DS descriptor 4 */
-	movw	%dx, %ss
-
-
-stack_update_to_user:
-	popl %esi
-	popl %ebp
-	popl %ecx
-	popl %edx
-	sti
-	movl %eax, %esi
-	iret
-
+	pushl	%ebp
+	movl	%esp,%ebp
+	pushal
+	movl	%esp, %eax
+	pushl	%eax
+	pushl	$46
+	jmp	Xtrap
 
 /*------------------------------------------------------------------------
  * _Xint? - array of exception/interrupt entry points that are
