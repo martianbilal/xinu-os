@@ -53,6 +53,7 @@ struct procent {		/* Entry in the process table		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
 	uint32 	prusercpu;	/* process utilization time in miliseconds */
+	uint32	prtotalcpu;	/* records the total cpu time (kernel + user) in microseconds */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
@@ -61,3 +62,15 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
+extern	uint64	currstart;	/* Starting time of currently running process */
+extern	uint64	currstop;	/* Stopping time of currently running process */
+
+
+#define DEBUG_BILAL 3
+
+#if defined(DEBUG_BILAL) && DEBUG_BILAL > 0
+	#define dbg_pr(fmt, args...) kprintf("\n DEBUG: %s:%d:%s(): " fmt, \
+    __FILE__, __LINE__, __func__, ##args, "\n")
+#else
+	#define dbg_pr(fmt, args...) /* Don't do anything in release builds */
+#endif

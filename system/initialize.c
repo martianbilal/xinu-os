@@ -25,6 +25,8 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 
 int	prcount;		/* Total number of live processes	*/
 pid32	currpid;		/* ID of currently executing process	*/
+uint64	currstart; 
+uint64	currstop; 
 
 /* Control sequence to reset the console colors and cusor positiion	*/
 
@@ -192,12 +194,14 @@ static	void	sysinit()
 
 	prptr = &proctab[NULLPROC];
 	prptr->prstate = PR_CURR;
+	currstart = getticks();	/* get the ticks at the current */
 	prptr->prprio = 0;
 	strncpy(prptr->prname, "prnull", 7);
 	prptr->prstkbase = getstk(NULLSTK);
 	prptr->prstklen = NULLSTK;
 	prptr->prstkptr = 0;
 	prptr->prusercpu = 0;
+	prptr->prtotalcpu = 0;
 
 	currpid = NULLPROC;
 	

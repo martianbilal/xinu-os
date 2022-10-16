@@ -30,15 +30,23 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		}
 
 		/* Old process will no longer remain current */
-
 		ptold->prstate = PR_READY;
+		
 		insert(currpid, readylist, ptold->prprio);
 	}
 
 	/* Force context switch to highest priority ready process */
+	currstop = getticks();
+	ptold->prtotalcpu = ptold->prtotalcpu + ((uint32)(currstop - currstart) / 389);
+	dbg_pr("[id : %d] prtotalcpu : %u\n", currpid, ptold->prtotalcpu);
+	dbg_pr("[id : %d]  currstart: %u\n", currpid, currstart);
+	dbg_pr("[id : %d]  currstop: %u\n", currpid, currstop);
+	
+
 
 	currpid = dequeue(readylist);
 	ptnew = &proctab[currpid];
+	currstart = getticks();
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);

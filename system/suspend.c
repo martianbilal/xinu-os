@@ -24,6 +24,7 @@ syscall	suspend(
 
 	prptr = &proctab[pid];
 	if ((prptr->prstate != PR_CURR) && (prptr->prstate != PR_READY)) {
+	
 		restore(mask);
 		return SYSERR;
 	}
@@ -32,6 +33,10 @@ syscall	suspend(
 					    /*   from the ready list	*/
 		prptr->prstate = PR_SUSP;
 	} else {
+		// currstop = getticks();
+		// dbg_pr("[id : %d] prtotalcpu : %u", currpid, prptr->prtotalcpu);
+		// prptr->prtotalcpu = prptr->prtotalcpu + ((currstop - currstart) / 389);
+	
 		prptr->prstate = PR_SUSP;   /* Mark the current process	*/
 		resched();		    /*   suspended and resched.	*/
 	}

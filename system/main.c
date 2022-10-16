@@ -15,17 +15,31 @@ process	main(void)
 
 	/* Run the Xinu shell */
 
-	recvclr();
-	resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
+	// recvclr();
+	// resume(create(shell, 8192, 50, "shell", 1, CONSOLE));
 
-	/* Wait for shell to exit and recreate it */
+	// /* Wait for shell to exit and recreate it */
 
-	while (TRUE) {
-		receive();
-		sleepms(200);
-		kprintf("\n\nMain process recreating shell\n\n");
-		resume(create(shell, 4096, 20, "shell", 1, CONSOLE));
-	}
+	// while (TRUE) {
+	// 	receive();
+	// 	sleepms(200);
+	// 	kprintf("\n\nMain process recreating shell\n\n");
+	// 	resume(create(shell, 4096, 20, "shell", 1, CONSOLE));
+	// }
+
+
+	dbg_pr("PRINTING THE TOTCPU AND THE USERCPU\n");
+	dbg_pr("[%d]\ttotcpu : %u\n",getpid(), totcpu(getpid()));
+	dbg_pr("[%d]\tusercpu : %u\n",getpid(), usercpu(getpid()));
+	dbg_pr("[%d]\ttotcpu : %u\n", 1, totcpu(1));
+	dbg_pr("[%d]\tusercpu : %u\n", 1, usercpu(1));
+	dbg_pr("[%d]\ttotcpu : %u\n", 2, totcpu(2));
+	dbg_pr("[%d]\tusercpu : %u\n", 2, usercpu(2));
+	dbg_pr("NULLL PROC :: totcpu : %u\n", totcpu(0));
+	dbg_pr("NULL PROC  :: usercpu : %u\n", usercpu(0));
+
+
+
 	return OK;
     
 }
