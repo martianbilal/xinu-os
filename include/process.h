@@ -54,7 +54,8 @@ struct procent {		/* Entry in the process table		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
 	uint32 	prusercpu;	/* process utilization time in miliseconds */
 	uint32	prtotalcpu;	/* records the total cpu time (kernel + user) in microseconds */
-};
+	uint16 prcurrcount;	/* counts the number of times a process have been cotxswed out */
+}; 
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
 #define	STACKMAGIC	0x0A0AAAA9
