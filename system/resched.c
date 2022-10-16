@@ -31,6 +31,8 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 
 		/* Old process will no longer remain current */
 		ptold->prstate = PR_READY;
+		/* marks the start of the waiting phase */
+		ptold->prreadystart = getticks();
 		
 		insert(currpid, readylist, ptold->prprio);
 	}

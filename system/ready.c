@@ -22,6 +22,9 @@ status	ready(
 
 	prptr = &proctab[pid];
 	prptr->prstate = PR_READY;
+	
+	/* marks the start of the waiting phase */
+	prptr->prreadystart = getticks();
 	insert(pid, readylist, prptr->prprio);
 	resched();
 

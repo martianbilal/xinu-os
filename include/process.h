@@ -55,6 +55,7 @@ struct procent {		/* Entry in the process table		*/
 	uint32 	prusercpu;	/* process utilization time in miliseconds */
 	uint32	prtotalcpu;	/* records the total cpu time (kernel + user) in microseconds */
 	uint16 prcurrcount;	/* counts the number of times a process have been cotxswed out */
+	uint64 prreadystart;	/* record when a process has entered the ready state 	 */
 }; 
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
