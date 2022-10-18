@@ -39,6 +39,12 @@ extern	syscall	control(did32, int32, int32, int32);
 /* in file create.c */
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
 
+
+/* in file dydisp.c */
+extern unsigned short getquantum(pid32);
+extern unsigned short gettqexp(pid32);
+extern unsigned short getslpret(pid32);
+
 /* in file createtsx.c */
 extern	pid32	createtsx(void *, uint32, char *, uint32, ...);
 

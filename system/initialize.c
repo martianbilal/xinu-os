@@ -171,8 +171,8 @@ static	void	sysinit()
 	int32	i;
 	struct	procent	*prptr;		/* Ptr to process table entry	*/
 	struct	sentry	*semptr;	/* Ptr to semaphore table entry	*/
-	struct tsx_disp *dyndispptr;	/* Ptr to dynamic dispatch table entry */
-	struct mfeedbqx *dynqueueptr;	/* Ptr to dynamic queue entry */
+	struct	tsx_disp	*dyndispptr;	/* Ptr to dynamic dispatch table entry */
+	struct	mfeedbqx	*dynqueueptr;	/* Ptr to dynamic queue entry */
 
 
 	/* Platform Specific Initialization */
