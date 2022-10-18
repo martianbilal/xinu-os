@@ -67,7 +67,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	currstart = getticks();
 	ptnew->prstate = PR_CURR;
 	#ifdef DYN_SCHED
-	preempt = getquantum(currpid);
+	preempt = getquantum(ptnew->prprio);
 	#else
 	preempt = QUANTUM;
 	#endif

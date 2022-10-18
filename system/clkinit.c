@@ -22,7 +22,7 @@ void	clkinit(void)
 	/* Initialize the preemption count */
 
 	#ifdef DYN_SCHED
-	preempt = getquantum(currpid);
+	preempt = getquantum(proctab[currpid].prprio);
 	#else
 	preempt = QUANTUM;
 	#endif

@@ -52,7 +52,7 @@ void	clkhandler()
 		#else
 		prptr->prpreemptcount2 = prptr->prpreemptcount2 + 1;
 		#endif
-		
+
 		if((--queuetab[firstid(sleepq)].qkey) <= 0) {
 			wakeup();
 		}
@@ -72,7 +72,7 @@ void	clkhandler()
 
 		// process is preempted => cpu bound process
 		// update its priority before it is rescheduled
-		prptr->prprio = gettqexp(currpid);
+		prptr->prprio = gettqexp(prptr->prprio);
 
 		#ifdef DYN_SCHED
 		preempt = getquantum(prptr->prprio);
