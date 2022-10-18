@@ -72,9 +72,9 @@ void	clkhandler()
 
 		// process is preempted => cpu bound process
 		// update its priority before it is rescheduled
-		prptr->prprio = gettqexp(prptr->prprio);
 
 		#ifdef DYN_SCHED
+		prptr->prprio = gettqexp(prptr->prprio);
 		preempt = getquantum(prptr->prprio);
 		#else
 		preempt = QUANTUM;

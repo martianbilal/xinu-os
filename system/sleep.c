@@ -47,6 +47,15 @@ syscall	sleepms(
 	}
 
 	proctab[currpid].prstate = PR_SLEEP;
+	
+
+	proctab[currpid].prstate = PR_SLEEP;
+
+	/* Promote the process before blocking */
+	#ifdef DYN_SCHED
+	proctab[currpid].prprio = getslpret(proctab[currpid].prprio);
+	#endif
+	
 	resched();
 	restore(mask);
 	return OK;
