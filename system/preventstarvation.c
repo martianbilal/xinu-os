@@ -9,6 +9,7 @@ void preventstarvation(
     void
 )
 {
+    #ifdef STARVATIONPREVENT
     struct mfeedbqx *dynptr;  /* Ptr to dynamic queue entry */
     struct procent *prptr;  /* Ptr to process table entry */
     int temp = 0;
@@ -48,5 +49,7 @@ void preventstarvation(
     }
 
     restore(mask);
+    #endif
     return;
 }
+
