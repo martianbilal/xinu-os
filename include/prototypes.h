@@ -39,6 +39,22 @@ extern	syscall	control(did32, int32, int32, int32);
 /* in file create.c */
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
 
+/* in file createtsx.c */
+extern	pid32	createtsx(void *, uint32, char *, uint32, ...);
+
+/* in file inspectmaxprio.c */
+extern	pri16	inpsectmaxprio(void);
+
+/* in file extractdynq.c */
+extern	short	extractdynq(void);
+
+/* in file insertdynq.c */
+extern	short	insertdynq(pri16, pid32);
+
+/* in file preventstarvation.c */
+void preventstarvation(void);
+
+
 /* in file ctxsw.S */
 extern	void	ctxsw(void *, void *);
 

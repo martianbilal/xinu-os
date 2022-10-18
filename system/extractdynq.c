@@ -15,6 +15,7 @@ short extractdynq(
 	// // struct	procent *prptr;		/* Ptr to process's table entry	*/
     struct mfeedbqx *dynptr;  /* Ptr to dynamic queue entry */
     int i;  /* for loop iterator */
+    pid32 pid; /* pid of process to be extracted */
 
     mask = disable();
     
@@ -24,7 +25,7 @@ short extractdynq(
             dynptr->count = dynptr->count - 1;
 
             // could be converted into a pop function
-            pid32 pid = dynptr->fifoqueue[dynptr->head];
+            pid = dynptr->fifoqueue[dynptr->head];
             dynptr->head = (dynptr->head + 1) % NPROC;
             restore(mask);
             return pid;
