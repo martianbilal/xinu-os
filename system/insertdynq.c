@@ -25,7 +25,7 @@ short insertdynq(
 )
 {
 	intmask 	mask;    	/* Interrupt mask		*/
-	// struct	procent *prptr;		/* Ptr to process's table entry	*/
+	struct	procent *prptr;		/* Ptr to process's table entry	*/
     struct mfeedbqx *dynptr;  /* Ptr to dynamic queue entry */
 
     mask = disable();
@@ -36,7 +36,7 @@ short insertdynq(
 		return SYSERR;
 	}
 
-    // prptr = &proctab[newpid];
+    prptr = &proctab[pid];
     dynptr = &dynqueue[prio];
 
     if(dynptr->count >= NPROC) {
@@ -46,6 +46,7 @@ short insertdynq(
     
     if(push_fifo_queue(dynptr->tail, dynptr->fifoqueue, pid)) {
         //success
+        prptr->prprio = prio;
         dynptr->count = dynptr->count + 1;         
     }
     else {
