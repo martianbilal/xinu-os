@@ -21,7 +21,11 @@ void	clkinit(void)
 
 	/* Initialize the preemption count */
 
+	#ifdef DYN_SCHED
+	preempt = getquantum(currpid);
+	#else
 	preempt = QUANTUM;
+	#endif
 
 	/* Initialize the time since boot to zero */
 

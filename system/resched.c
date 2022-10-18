@@ -66,7 +66,11 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptnew = &proctab[currpid];
 	currstart = getticks();
 	ptnew->prstate = PR_CURR;
-	preempt = QUANTUM;		/* Reset time slice for process	*/
+	#ifdef DYN_SCHED
+	preempt = getquantum(currpid);
+	#else
+	preempt = QUANTUM;
+	#endif
 	// udpate the value of the prcurrcount here : 
 	ptnew->prcurrcount = ptnew->prcurrcount + 1;
 	// adding the time spent in the ready queue to the totalresponse
