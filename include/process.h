@@ -41,11 +41,15 @@
 
 #define NDESC		5	/* must be odd to make procent 4N bytes	*/
 
+
 /* Starvation prevention flags */
 #define STARVATIONPREVENT 1			/* 1 to enable starvation prevention, 0 to disable */
 #define STARVATIONPERIOD 100 		/* starvation period in milliseconds */
 #define STARVATIONTHRESHOLD 500		/* starvation threshold in milliseconds */
 #define PRIOBOOST 3					/* priority boost to apply when a process is starving */
+
+
+
 
 /* Definition of the process table (multiple of 32 bits) */
 

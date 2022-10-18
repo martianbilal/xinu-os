@@ -43,7 +43,7 @@ extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
 extern	pid32	createtsx(void *, uint32, char *, uint32, ...);
 
 /* in file inspectmaxprio.c */
-extern	pri16	inpsectmaxprio(void);
+extern	pri16	inspectmaxprio(void);
 
 /* in file extractdynq.c */
 extern	short	extractdynq(void);

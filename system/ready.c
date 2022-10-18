@@ -25,7 +25,11 @@ status	ready(
 	
 	/* marks the start of the waiting phase */
 	prptr->prreadystart = getticks();
+	#ifdef RT_SCHED
+	insertdynq(pid, prptr->prprio);
+	#else
 	insert(pid, readylist, prptr->prprio);
+	#endif
 	resched();
 
 	return OK;

@@ -26,16 +26,27 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptold = &proctab[currpid];
 
 	if (ptold->prstate == PR_CURR) {  /* Process remains eligible */
+		
+		#ifdef DYN_SCHED
+		if (ptold->prprio > inspectmaxprio()) {
+			return;
+		}
+		#else
 		if (ptold->prprio > firstkey(readylist)) {
 			return;
 		}
+		#endif
 
 		/* Old process will no longer remain current */
 		ptold->prstate = PR_READY;
 		/* marks the start of the waiting phase */
 		ptold->prreadystart = getticks();
-		
+
+		#ifdef DYN_SCHED
+		insertdynq(currpid, ptold->prprio);
+		#else
 		insert(currpid, readylist, ptold->prprio);
+		#endif
 	}
 
 	/* Force context switch to highest priority ready process */
@@ -46,8 +57,12 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	dbg_pr("[id : %d]  currstop: %u\n", currpid, currstop);
 	
 
-
+	#ifdef DYN_SCHED
+	currpid = extractdynq();
+	#else
 	currpid = dequeue(readylist);
+	#endif
+
 	ptnew = &proctab[currpid];
 	currstart = getticks();
 	ptnew->prstate = PR_CURR;

@@ -5,6 +5,9 @@
 
 #define TSXINIT 4
 
+#define DYN_SCHED 1              // 1: dynamic scheduling, 0: fixed scheduling
+
+
 struct tsx_disp {
   unsigned short  tqexp;         // new priority: CPU-bound (time quantum expired)
   unsigned short  slpret;        // new priority: I/O-bound (sleep return)
