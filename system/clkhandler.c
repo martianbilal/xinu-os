@@ -46,7 +46,13 @@ void	clkhandler()
 
 		/* Decrement the delay for the first process on the	*/
 		/*   sleep queue, and awaken if the count reaches zero	*/
-
+		
+		#ifdef TEST_DYNSCHED
+		prptr->preempt2True = 1;
+		#else
+		prptr->prpreemptcount2 = prptr->prpreemptcount2 + 1;
+		#endif
+		
 		if((--queuetab[firstid(sleepq)].qkey) <= 0) {
 			wakeup();
 		}
@@ -62,6 +68,11 @@ void	clkhandler()
 		#else
 		prptr->preemptcount1 = prptr->preemptcount1 + 1;
 		#endif
+
+
+		// process is preempted => cpu bound process
+		// update its priority before it is rescheduled
+		prptr->prprio = gettqexp(currpid);
 
 		#ifdef DYN_SCHED
 		preempt = getquantum(prptr->prprio);

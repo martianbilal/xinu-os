@@ -81,8 +81,13 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	}
 
 	ptnew->prtotalresponse = tempresponse;
+
 	
 	#ifdef TEST_DYNSCHED
+	// reset indicators 
+	ptold->preempt1True = 0;
+	ptold->preempt2True = 0;
+
 	if(!(temppid == currpid)){	// process is actually changing
 		if( ptold->preempt1True ){	// if the process was preempted by time slice depletion
 			ptold->preempt1True = 0;
@@ -109,9 +114,9 @@ status	resched_cntl(		/* Assumes interrupts are disabled	*/
 	  int32	defer		/* Either DEFER_START or DEFER_STOP	*/
 	)
 {
-	struct procent *prptr; 
+	// struct procent *prptr; 
 
-	prptr = &proctab[currpid];
+	// prptr = &proctab[currpid];
 
 	switch (defer) {
 
@@ -127,11 +132,11 @@ status	resched_cntl(		/* Assumes interrupts are disabled	*/
 			return SYSERR;
 		}
 		if ( (--Defer.ndefers == 0) && Defer.attempt ) {
-			#ifdef TEST_DYNSCHED
-			prptr->preempt2True = 1;
-			#else
-			prptr->prpreemptcount2 = prptr->prpreemptcount2 + 1;
-			#endif
+			// #ifdef TEST_DYNSCHED
+			// prptr->preempt2True = 1;
+			// #else
+			// prptr->prpreemptcount2 = prptr->prpreemptcount2 + 1;
+			// #endif
 			resched();
 		}
 		return OK;

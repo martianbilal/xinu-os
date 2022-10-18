@@ -3,7 +3,7 @@
 #define DYNSCHED_H
 
 
-#define TEST_DYNSCHED 0
+#define TEST_DYNSCHED 1
 
 #define TSXINIT 4
 
