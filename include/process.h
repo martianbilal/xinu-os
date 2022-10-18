@@ -6,6 +6,9 @@
 #define	NPROC		8
 #endif		
 
+
+#include <dynsched.h>
+
 /* Process state constants */
 
 #define	PR_FREE		0	/* Process table entry is unused	*/
@@ -54,14 +57,23 @@ struct procent {		/* Entry in the process table		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
 	uint32 	prusercpu;	/* process utilization time in miliseconds */
 	uint32	prtotalcpu;	/* records the total cpu time (kernel + user) in microseconds */
-	uint16 prcurrcount;	/* counts the number of times a process have been cotxswed out */
-	uint64 prreadystart;	/* record when a process has entered the ready state 	 */
+	uint16	prcurrcount;	/* counts the number of times a process have been ctxswed out */
+	uint64	prreadystart;	/* record when a process has entered the ready state 	 */
+	uint64	prtotalresponse;	/* record the time took to go from the ready to the curr */
+	uint32	prmaxresponse;	/* record the max time spent by this process in the ready queue */
+	uint16	prpreemptcount1;
+	uint16	prpreemptcount2;
+	uint16	preempt1True; 
+	uint16	preempt2True;
 }; 
+
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
 #define	STACKMAGIC	0x0A0AAAA9
 
 extern	struct	procent proctab[];
+extern	struct	tsx_disp	dyndisp[];	/* dynamic scheduler dispatch table */
+extern	struct	mfeedbqx	dynqueue[];	/* dynamic scheduler queue */
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
 extern	uint64	currstart;	/* Starting time of currently running process */

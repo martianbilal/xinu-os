@@ -17,6 +17,9 @@ local	process startup(void);	/* Process to finish startup tasks	*/
 
 /* Declarations of major kernel variables */
 
+
+struct	tsx_disp	dyndisp[10];	/* dynamic scheduler dispatch table */
+struct	mfeedbqx	dynqueue[10];	/* dynamic scheduler queue */
 struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
@@ -140,6 +143,22 @@ local process	startup(void)
 	return OK;
 }
 
+int max_two(int a, int b) {
+	if (a > b) {
+		return a;
+	} else {
+		return b;
+	}
+}
+
+int min_two(int a, int b) {
+	if (a < b) {
+		return a;
+	} else {
+		return b;
+	}
+}
+
 
 /*------------------------------------------------------------------------
  *
@@ -152,6 +171,9 @@ static	void	sysinit()
 	int32	i;
 	struct	procent	*prptr;		/* Ptr to process table entry	*/
 	struct	sentry	*semptr;	/* Ptr to semaphore table entry	*/
+	struct tsx_disp *dyndispptr;	/* Ptr to dynamic dispatch table entry */
+	struct mfeedbqx *dynqueueptr;	/* Ptr to dynamic queue entry */
+
 
 	/* Platform Specific Initialization */
 
@@ -190,6 +212,26 @@ static	void	sysinit()
 		prptr->prprio = 0;
 	}
 
+	/* Initialize priority queue entries */
+
+	for (i = 0; i < 10; i++) {
+		dynqueueptr = &dynqueue[i];
+		dynqueueptr->head = NULL;
+		dynqueueptr->tail = NULL;
+		dynqueueptr->count = 0;
+	}
+
+	/* Initialize dispatch table entries */
+
+	for (i = 0; i < 10; i++) {
+		dyndispptr = &dyndisp[i];
+		dyndispptr->tqexp = max_two(0, i-1);
+		dyndispptr->slpret = min_two(9, i+1);
+		dyndispptr->quantum = 100 - (i * 10);
+	}
+
+
+
 	/* Initialize the Null process entry */	
 
 	prptr = &proctab[NULLPROC];
@@ -199,9 +241,13 @@ static	void	sysinit()
 	strncpy(prptr->prname, "prnull", 7);
 	prptr->prstkbase = getstk(NULLSTK);
 	prptr->prstklen = NULLSTK;
+	prptr->prtotalresponse = 0;
 	prptr->prstkptr = 0;
 	prptr->prusercpu = 0;
 	prptr->prtotalcpu = 0;
+	prptr->prreadystart = 0;
+	prptr->prcurrcount = 0;
+	prptr->prmaxresponse = 0;
 
 	currpid = NULLPROC;
 	

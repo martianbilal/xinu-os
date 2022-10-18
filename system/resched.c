@@ -12,8 +12,9 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 {
 	struct procent *ptold;	/* Ptr to table entry for old process	*/
 	struct procent *ptnew;	/* Ptr to table entry for new process	*/
-
+	uint64	tempresponse;	/* holding the response time temporarily*/
 	/* If rescheduling is deferred, record attempt and return */
+	uint32 temppid = currpid;
 
 	if (Defer.ndefers > 0) {
 		Defer.attempt = TRUE;
@@ -52,7 +53,25 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	ptnew->prstate = PR_CURR;
 	preempt = QUANTUM;		/* Reset time slice for process	*/
 	// udpate the value of the prcurrcount here : 
-	ptnew->prcurrcount = ptnew->prcurrcount + 1; 
+	ptnew->prcurrcount = ptnew->prcurrcount + 1;
+	// adding the time spent in the ready queue to the totalresponse
+	tempresponse = ((uint32)(currstart - ptnew->prreadystart)) / 389;
+	if(tempresponse > ptnew->prtotalresponse) {
+		// change the maxresponse 
+		ptnew->prmaxresponse = (uint32)tempresponse / 1000;
+	}
+
+	ptnew->prtotalresponse = tempresponse;
+	if(!(temppid == currpid)){	// process is actually changing
+		if( ptold->preempt1True ){	// if the process was preempted by time slice depletion
+			ptold->preempt1True = 0;
+			ptold->prpreemptcount1 = ptold->prpreemptcount1 + 1;
+		} 
+		if( ptold->preempt2True ){	// if the process was preempted through wakeup
+			ptold->preempt2True = 0;
+			ptold->prpreemptcount2 = ptold->prpreemptcount2 + 1;
+		}
+	}
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	/* Old process returns here when resumed */
@@ -68,6 +87,10 @@ status	resched_cntl(		/* Assumes interrupts are disabled	*/
 	  int32	defer		/* Either DEFER_START or DEFER_STOP	*/
 	)
 {
+	struct procent *prptr; 
+
+	prptr = &proctab[currpid];
+
 	switch (defer) {
 
 	    case DEFER_START:	/* Handle a deferral request */
@@ -82,6 +105,7 @@ status	resched_cntl(		/* Assumes interrupts are disabled	*/
 			return SYSERR;
 		}
 		if ( (--Defer.ndefers == 0) && Defer.attempt ) {
+			prptr->preempt2True = 1;
 			resched();
 		}
 		return OK;

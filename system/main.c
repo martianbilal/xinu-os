@@ -39,6 +39,19 @@ process	main(void)
 	dbg_pr("NULL PROC  :: usercpu : %u\n", usercpu(0));
 
 
+	dbg_pr("PRINTING THE response times \n");
+	dbg_pr("[%d]\tcurr resp time : %u\n",getpid(), resptime(getpid()));
+	
+	dbg_pr("[%d]\t2 resp time : %u\n", 2, resptime(2));
+	dbg_pr("[%d]\t2 resp time : %u\n", 2, SYSERR == resptime(2));
+	
+	dbg_pr("[%d]\tcurr resp time : %u\n", 1, resptime(1));
+	dbg_pr("[%d]\t1 resp time : %u\n", 1, SYSERR == resptime(2));
+
+	dbg_pr("[%d]\tNULL resp time : %u\n", 0, resptime(0));
+	dbg_pr("[%d]\tNULL resp time : %u\n", 0, SYSERR == resptime(2));
+	
+
 
 	return OK;
     

@@ -43,6 +43,7 @@ void	clkhandler()
 	/*   remaining time reaches zero			     */
 
 	if((--preempt) <= 0) {
+		prptr->preempt1True = 1;
 		preempt = QUANTUM;
 		resched();
 	}

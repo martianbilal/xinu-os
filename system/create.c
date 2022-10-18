@@ -51,6 +51,14 @@ pid32	create(
 	prptr->prhasmsg = FALSE;
 	prptr->prusercpu = 0;
 	prptr->prtotalcpu = 0;
+	prptr->prreadystart = 0;
+	prptr->prtotalresponse = 0;
+	prptr->prcurrcount = 0;
+	prptr->prmaxresponse = 0;
+	prptr->prpreemptcount1 = 0;
+	prptr->prpreemptcount2 = 0;
+	prptr->preempt1True = 0;
+	prptr->preempt2True = 0;
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;

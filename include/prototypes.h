@@ -592,6 +592,8 @@ extern	void	udp_ntoh(struct netpacket *);
 extern	void	udp_hton(struct netpacket *);
 
 
+/* in file resptime.c */
+extern	syscall	resptime(pid32);
 
 /* in file totcpu.c */
 extern	syscall	totcpu(pid32);
