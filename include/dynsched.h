@@ -3,6 +3,8 @@
 #define DYNSCHED_H
 
 
+#define TEST_DYNSCHED 0
+
 #define TSXINIT 4
 
 #define DYN_SCHED 1              // 1: dynamic scheduling, 0: fixed scheduling

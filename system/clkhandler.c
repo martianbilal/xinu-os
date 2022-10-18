@@ -56,7 +56,12 @@ void	clkhandler()
 	/*   remaining time reaches zero			     */
 
 	if((--preempt) <= 0) {
+
+		#ifdef TEST_DYNSCHED
 		prptr->preempt1True = 1;
+		#else
+		prptr->preemptcount1 = prptr->preemptcount1 + 1;
+		#endif
 
 		#ifdef DYN_SCHED
 		preempt = getquantum(prptr->prprio);

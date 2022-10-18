@@ -81,6 +81,8 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	}
 
 	ptnew->prtotalresponse = tempresponse;
+	
+	#ifdef TEST_DYNSCHED
 	if(!(temppid == currpid)){	// process is actually changing
 		if( ptold->preempt1True ){	// if the process was preempted by time slice depletion
 			ptold->preempt1True = 0;
@@ -91,6 +93,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 			ptold->prpreemptcount2 = ptold->prpreemptcount2 + 1;
 		}
 	}
+	#endif
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 
 	/* Old process returns here when resumed */
@@ -124,7 +127,11 @@ status	resched_cntl(		/* Assumes interrupts are disabled	*/
 			return SYSERR;
 		}
 		if ( (--Defer.ndefers == 0) && Defer.attempt ) {
+			#ifdef TEST_DYNSCHED
 			prptr->preempt2True = 1;
+			#else
+			prptr->prpreemptcount2 = prptr->prpreemptcount2 + 1;
+			#endif
 			resched();
 		}
 		return OK;
