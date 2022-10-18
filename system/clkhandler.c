@@ -57,7 +57,12 @@ void	clkhandler()
 
 	if((--preempt) <= 0) {
 		prptr->preempt1True = 1;
+
+		#ifdef DYN_SCHED
+		preempt = getquantum(currpid);
+		#else
 		preempt = QUANTUM;
+		#endif
 		resched();
 	}
 }
