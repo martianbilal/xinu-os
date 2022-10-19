@@ -43,7 +43,8 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		ptold->prreadystart = getticks();
 
 		#ifdef DYN_SCHED
-		insertdynq(currpid, ptold->prprio);
+		// dbg_pr("[DYN sched]inserting pid : %d\n", currpid);
+		insertdynq(ptold->prprio, currpid);
 		#else
 		insert(currpid, readylist, ptold->prprio);
 		#endif
@@ -52,16 +53,31 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	/* Force context switch to highest priority ready process */
 	currstop = getticks();
 	ptold->prtotalcpu = ptold->prtotalcpu + ((uint32)(currstop - currstart) / 389);
-	dbg_pr("[id : %d] prtotalcpu : %u\n", currpid, ptold->prtotalcpu);
-	dbg_pr("[id : %d]  currstart: %u\n", currpid, currstart);
-	dbg_pr("[id : %d]  currstop: %u\n", currpid, currstop);
+	// dbg_pr("[id : %d] prtotalcpu : %u\n", currpid, ptold->prtotalcpu);
+	// dbg_pr("[id : %d]  currstart: %u\n", currpid, currstart);
+	// dbg_pr("[id : %d]  currstop: %u\n", currpid, currstop);
 	
-
+	// dbg_pr("[%d] resched called\n", currpid);
 	#ifdef DYN_SCHED
+	// dbg_pr("we are getting next process from dynamic scheduler\n");
 	currpid = extractdynq();
+	if( currpid == SYSERR ) {
+		currpid = NULLPROC;
+	} 
+	// dbg_pr("[DYN SCHED]currpid : %d\n", currpid);
+	// dbg_pr("[DYN SCHED]tempid : %d\n", temppid);
+
 	#else
 	currpid = dequeue(readylist);
+
+	// dbg_pr("currpid : %d\n", currpid);
+	// dbg_pr("tempid : %d\n", temppid);
+	
 	#endif
+
+
+
+	// dbg_pr("[%d] currpid\n", currpid);
 
 	ptnew = &proctab[currpid];
 	currstart = getticks();
@@ -80,7 +96,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		ptnew->prmaxresponse = (uint32)tempresponse / 1000;
 	}
 
-	ptnew->prtotalresponse = tempresponse;
+	ptnew->prtotalresponse = ptnew->prtotalresponse + tempresponse;
 
 	
 	#ifdef TEST_DYNSCHED

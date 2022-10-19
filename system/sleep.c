@@ -46,10 +46,8 @@ syscall	sleepms(
 		return SYSERR;
 	}
 
-	proctab[currpid].prstate = PR_SLEEP;
-	
 
-	proctab[currpid].prstate = PR_SLEEP;
+	proctab[currpid].prstate = PR_SLEEP;	
 
 	/* Promote the process before blocking */
 	#ifdef DYN_SCHED

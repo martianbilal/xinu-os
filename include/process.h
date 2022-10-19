@@ -9,6 +9,8 @@
 
 #include <dynsched.h>
 
+
+#define STOPTIME 10000	// 10 seconds test time
 /* Process state constants */
 
 #define	PR_FREE		0	/* Process table entry is unused	*/

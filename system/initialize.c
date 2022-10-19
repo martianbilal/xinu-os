@@ -89,10 +89,18 @@ void	nulluser()
 	//net_init();
 
 	/* Create a process to finish startup and start main */
-
+	#ifndef DYN_SCHED
+	dbg_pr("DYN_SCHED is undefined \n");
+	dbg_pr("starting the startup process with 20 priority \n");
+	
 	resume(create((void *)startup, INITSTK, INITPRIO,
 					"Startup process", 0, NULL));
-
+	#else
+	dbg_pr("DYN_SCHED is defined \n");
+	dbg_pr("starting the startup process \n");
+	resume(create((void *)startup, INITSTK, 9,
+					"Startup process", 0, NULL));
+	#endif
 	/* Become the Null process (i.e., guarantee that the CPU has	*/
 	/*  something to run when no other process is ready to execute)	*/
 
@@ -135,8 +143,15 @@ local process	startup(void)
 
 	/* Create a process to execute function main() */
 
+	#ifndef DYN_SCHED
+	dbg_pr("creating the main process with pririty 20\n");
 	resume(create((void *)main, INITSTK, INITPRIO,
 					"Main process", 0, NULL));
+	#else
+	dbg_pr("creating the main process with pririty 9\n");	
+	resume(create((void *)main, INITSTK, 9,
+					"Main process", 0, NULL));
+	#endif
 
 	/* Startup process exits at this point */
 

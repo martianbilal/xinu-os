@@ -2,10 +2,11 @@
 
 #include <xinu.h>
 
-uint32	clktime;		/* Seconds since boot			*/
+uint32	clktime;			/* Seconds since boot			*/
+uint32	vfineclkcounter;	/* Milli Seconds since boot			*/
 uint32	ctr1000 = 0;		/* Milliseconds since boot		*/
-qid16	sleepq;			/* Queue of sleeping processes		*/
-uint32	preempt;		/* Preemption counter			*/
+qid16	sleepq;				/* Queue of sleeping processes		*/
+uint32	preempt;			/* Preemption counter			*/
 
 /*------------------------------------------------------------------------
  * clkinit  -  Initialize the clock and sleep queue at startup (x86)
@@ -30,6 +31,7 @@ void	clkinit(void)
 	/* Initialize the time since boot to zero */
 
 	clktime = 0;
+	vfineclkcounter = 0;
 
 	/* Set interrupt vector for the clock to invoke clkdisp */
 

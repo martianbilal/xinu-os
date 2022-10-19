@@ -13,6 +13,8 @@ void	clkhandler()
 	static uint32 count_starve = STARVATIONPERIOD; /* Count to STARVATIONPERIOD */
 	#endif
 
+
+	vfineclkcounter++;
 	struct procent *prptr;
 
 	prptr = &proctab[currpid];

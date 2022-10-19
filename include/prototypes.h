@@ -39,6 +39,12 @@ extern	syscall	control(did32, int32, int32, int32);
 /* in file create.c */
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
 
+/* in file cpubound.c */
+extern	void	cpubound(void);
+
+/* in file iobound.c */
+extern	void	iobound(void);
+
 
 /* in file dydisp.c */
 extern unsigned short getquantum(pri16);

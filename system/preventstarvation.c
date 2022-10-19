@@ -43,7 +43,7 @@ void preventstarvation(
                 pid = dynptr->fifoqueue[dynptr->head];
                 dynptr->head = (dynptr->head + 1) % NPROC;
                 
-                insertdynq(pid, temp);
+                insertdynq(temp, pid);
             }
         }
     }

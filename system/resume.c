@@ -13,7 +13,7 @@ pri16	resume(
 	intmask	mask;			/* Saved interrupt mask		*/
 	struct	procent *prptr;		/* Ptr to process's table entry	*/
 	pri16	prio;			/* Priority to return		*/
-
+	
 	mask = disable();
 	if (isbadpid(pid)) {
 		restore(mask);
@@ -24,6 +24,8 @@ pri16	resume(
 		restore(mask);
 		return (pri16)SYSERR;
 	}
+	
+	// dbg_pr("resume called with pid : %d\n", pid);
 	prio = prptr->prprio;		/* Record priority to return	*/
 	ready(pid);
 	restore(mask);
