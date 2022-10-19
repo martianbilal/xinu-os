@@ -28,9 +28,9 @@ short extractdynq(
             // could be converted into a pop function
             pid = dynptr->fifoqueue[dynptr->head];
             dynptr->head = (dynptr->head + 1) % NPROC;
-            if(pid == 93) {
-                // dbg_pr("[pid  = 93]Level %d has %d processes\n", i, dynptr->count);
-                // dbg_pr("[pid  = 93]Level %d has %d processes\n", 9, dynptr->count);
+            if(pid == 73) {
+                // dbg_pr("[pid  = 73]Level %d has %d processes\n", i, dynptr->count);
+                // dbg_pr("[pid  = 73]Level %d has %d processes\n", 9, dynptr->count);
 
 
             }
