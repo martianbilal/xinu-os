@@ -9,7 +9,7 @@ void preventstarvation(
     void
 )
 {
-    #ifdef STARVATIONPREVENT
+    #if (STARVATIONPREVENT == 1)
     struct mfeedbqx *dynptr;  /* Ptr to dynamic queue entry */
     struct procent *prptr;  /* Ptr to process table entry */
     int temp = 0;
@@ -18,6 +18,7 @@ void preventstarvation(
 
     intmask 	mask;    	/* Interrupt mask		*/
     mask = disable();
+    // dbg_pr("preventstarvation() called");
 
     for(i = 0; i < 10; i++) {
         dynptr = &dynqueue[i];

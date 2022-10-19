@@ -12,7 +12,7 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 {
 	struct procent *ptold;	/* Ptr to table entry for old process	*/
 	struct procent *ptnew;	/* Ptr to table entry for new process	*/
-	uint64	tempresponse;	/* holding the response time temporarily*/
+	uint32	tempresponse;	/* holding the response time temporarily*/
 	/* If rescheduling is deferred, record attempt and return */
 	uint32 temppid = currpid;
 
@@ -42,6 +42,10 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 		/* marks the start of the waiting phase */
 		ptold->prreadystart = getticks();
 
+
+		if(ptold->preempt2True) {
+			ptold->useprevtimeslice= 1;
+		}
 		#ifdef DYN_SCHED
 		// dbg_pr("[DYN sched]inserting pid : %d\n", currpid);
 		insertdynq(ptold->prprio, currpid);
@@ -87,22 +91,28 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 	#else
 	preempt = QUANTUM;
 	#endif
+	if(ptnew->useprevtimeslice) {
+		preempt = ptnew->prevtimeslice;
+		ptnew->useprevtimeslice = 0;
+	}
 	// udpate the value of the prcurrcount here : 
 	ptnew->prcurrcount = ptnew->prcurrcount + 1;
 	// adding the time spent in the ready queue to the totalresponse
 	tempresponse = ((uint32)(currstart - ptnew->prreadystart)) / 389;
-	if(tempresponse > ptnew->prtotalresponse) {
+	if((tempresponse / 1000) > ptnew->prmaxresponse) {
 		// change the maxresponse 
-		ptnew->prmaxresponse = (uint32)tempresponse / 1000;
+		ptnew->prmaxresponse = tempresponse / 1000;
 	}
 
-	ptnew->prtotalresponse = ptnew->prtotalresponse + tempresponse;
+	ptnew->prtotalresponse = (uint32)ptnew->prtotalresponse + tempresponse;
+	// dbg_pr("[id : %d] prtotalresponse : %u\n", currpid, ptnew->prtotalresponse);
 
 	
 	#ifdef TEST_DYNSCHED
-	// reset indicators 
-	ptold->preempt1True = 0;
-	ptold->preempt2True = 0;
+	// if(ptnew->prusercpu > 5000) {
+	// 	dbg_pr("pid: %d, priorirty : %u", currpid, ptnew->prprio);
+	// }
+
 
 	if(!(temppid == currpid)){	// process is actually changing
 		if( ptold->preempt1True ){	// if the process was preempted by time slice depletion
@@ -114,6 +124,9 @@ void	resched(void)		/* Assumes interrupts are disabled	*/
 			ptold->prpreemptcount2 = ptold->prpreemptcount2 + 1;
 		}
 	}
+	// reset indicators 
+	ptold->preempt1True = 0;
+	ptold->preempt2True = 0;
 	#endif
 	ctxsw(&ptold->prstkptr, &ptnew->prstkptr);
 

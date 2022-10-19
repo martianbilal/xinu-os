@@ -21,12 +21,19 @@ short extractdynq(
     
     for(i = 9; i >= 0; i--) {
         dynptr = &dynqueue[i];
+    
         if(dynptr->count){
             dynptr->count = dynptr->count - 1;
 
             // could be converted into a pop function
             pid = dynptr->fifoqueue[dynptr->head];
             dynptr->head = (dynptr->head + 1) % NPROC;
+            if(pid == 93) {
+                // dbg_pr("[pid  = 93]Level %d has %d processes\n", i, dynptr->count);
+                // dbg_pr("[pid  = 93]Level %d has %d processes\n", 9, dynptr->count);
+
+
+            }
             restore(mask);
             return pid;
         }

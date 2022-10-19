@@ -45,10 +45,13 @@
 
 
 /* Starvation prevention flags */
-#define STARVATIONPREVENT 1			/* 1 to enable starvation prevention, 0 to disable */
-#define STARVATIONPERIOD 100 		/* starvation period in milliseconds */
-#define STARVATIONTHRESHOLD 500		/* starvation threshold in milliseconds */
-#define PRIOBOOST 3					/* priority boost to apply when a process is starving */
+#define STARVATIONPREVENT 0			/* 1 to enable starvation prevention, 0 to disable */
+#define STARVATIONPERIOD 1 		/* starvation period in milliseconds */
+// #define STARVATIONPERIOD 100 		/* starvation period in milliseconds */
+// #define STARVATIONTHRESHOLD 500		/* starvation threshold in milliseconds */
+#define STARVATIONTHRESHOLD 30		/* starvation threshold in milliseconds */
+// #define PRIOBOOST 3					/* priority boost to apply when a process is starving */
+#define PRIOBOOST 5					/* priority boost to apply when a process is starving */
 
 
 
@@ -77,6 +80,9 @@ struct procent {		/* Entry in the process table		*/
 	uint16	prpreemptcount2;
 	uint16	preempt1True; 
 	uint16	preempt2True;
+
+	uint16  useprevtimeslice;	/* use the previous timeslice for the next scheduling */
+	uint32  prevtimeslice;		/* previous timeslice */
 }; 
 
 
@@ -100,3 +106,5 @@ extern	uint64	currstop;	/* Stopping time of currently running process */
 #else
 	#define dbg_pr(fmt, args...) /* Don't do anything in release builds */
 #endif
+
+// #define get_32_bitx(x) ((uint32) (x >> 32))

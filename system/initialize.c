@@ -263,6 +263,8 @@ static	void	sysinit()
 	prptr->prreadystart = 0;
 	prptr->prcurrcount = 0;
 	prptr->prmaxresponse = 0;
+	prptr->useprevtimeslice = 0;
+	prptr->prevtimeslice = 0;
 
 	currpid = NULLPROC;
 	

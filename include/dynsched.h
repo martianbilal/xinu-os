@@ -3,7 +3,9 @@
 #define DYNSCHED_H
 
 
-#define TEST_DYNSCHED 1
+
+// uncomment to use preempt*true indicators
+#define TEST_DYNSCHED
 
 #define TSXINIT 4
 

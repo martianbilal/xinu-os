@@ -51,7 +51,9 @@ syscall	sleepms(
 
 	/* Promote the process before blocking */
 	#ifdef DYN_SCHED
+	// dbg_pr("[DYN sched]promoting pid : %d from %d ", currpid, proctab[currpid].prprio);
 	proctab[currpid].prprio = getslpret(proctab[currpid].prprio);
+	// dbg_pr("to %d\n", proctab[currpid].prprio);
 	#endif
 	
 	resched();

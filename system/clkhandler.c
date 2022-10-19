@@ -9,7 +9,7 @@
 void	clkhandler()
 {
 	static	uint32	count1000 = 1000;	/* Count to 1000 ms	*/
-	#ifdef STARVATIONPREVENT
+	#if (STARVATIONPREVENT == 1)
 	static uint32 count_starve = STARVATIONPERIOD; /* Count to STARVATIONPERIOD */
 	#endif
 
@@ -21,11 +21,14 @@ void	clkhandler()
 	prptr->prusercpu = prptr->prusercpu + 1;
 
 
-	#ifdef STARVATIONPREVENT
+	#if (STARVATIONPREVENT == 1)
 	/* Decrement the starvation counter */
+	// dbg_pr("Decrementing starvation counter: %u", count_starve);
 	if((--count_starve) <= 0) {
-		preventstarvation();
+		// dbg_pr("Decrementing starvation counter");
+
 		count_starve = STARVATIONPERIOD;
+		preventstarvation();
 	}
 	#endif
 
@@ -55,6 +58,7 @@ void	clkhandler()
 		prptr->prpreemptcount2 = prptr->prpreemptcount2 + 1;
 		#endif
 
+		prptr->prevtimeslice = preempt;
 		if((--queuetab[firstid(sleepq)].qkey) <= 0) {
 			wakeup();
 		}
