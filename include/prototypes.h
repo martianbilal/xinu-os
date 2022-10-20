@@ -51,6 +51,10 @@ extern unsigned short getquantum(pri16);
 extern unsigned short gettqexp(pri16);
 extern unsigned short getslpret(pri16);
 
+
+/* in file creatertx.c */
+extern pid32 creatertx(void *, uint32, pri16, char *, uint32, ...);
+
 /* in file createtsx.c */
 extern	pid32	createtsx(void *, uint32, char *, uint32, ...);
 

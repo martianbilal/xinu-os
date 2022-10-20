@@ -18,8 +18,12 @@ short extractdynq(
     pid32 pid; /* pid of process to be extracted */
 
     mask = disable();
+
+    // RT scheduling
     
-    for(i = 9; i >= 0; i--) {
+
+
+    for(i = 10; i >= 0; i--) {
         dynptr = &dynqueue[i];
     
         if(dynptr->count){
@@ -31,7 +35,6 @@ short extractdynq(
             if(pid == 73) {
                 // dbg_pr("[pid  = 73]Level %d has %d processes\n", i, dynptr->count);
                 // dbg_pr("[pid  = 73]Level %d has %d processes\n", 9, dynptr->count);
-
 
             }
             restore(mask);

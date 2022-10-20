@@ -80,8 +80,10 @@ void	clkhandler()
 		// update its priority before it is rescheduled
 
 		#ifdef DYN_SCHED
-		prptr->prprio = gettqexp(prptr->prprio);
-		preempt = getquantum(prptr->prprio);
+		if(prptr->prprio != 10) {
+			prptr->prprio = gettqexp(prptr->prprio);
+			preempt = getquantum(prptr->prprio);
+		}
 		#else
 		preempt = QUANTUM;
 		#endif

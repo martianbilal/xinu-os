@@ -18,8 +18,8 @@ local	process startup(void);	/* Process to finish startup tasks	*/
 /* Declarations of major kernel variables */
 
 
-struct	tsx_disp	dyndisp[10];	/* dynamic scheduler dispatch table */
-struct	mfeedbqx	dynqueue[10];	/* dynamic scheduler queue */
+struct	tsx_disp	dyndisp[11];	/* dynamic scheduler dispatch table */
+struct	mfeedbqx	dynqueue[11];	/* dynamic scheduler queue */
 struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
@@ -229,7 +229,7 @@ static	void	sysinit()
 
 	/* Initialize priority queue entries */
 
-	for (i = 0; i < 10; i++) {
+	for (i = 0; i < 11; i++) {
 		dynqueueptr = &dynqueue[i];
 		dynqueueptr->head = NULL;
 		dynqueueptr->tail = NULL;
@@ -244,6 +244,12 @@ static	void	sysinit()
 		dyndispptr->slpret = min_two(9, i+1);
 		dyndispptr->quantum = 100 - (i * 10);
 	}
+
+	// for real time scheduling 
+	dyndispptr = &dyndisp[10];
+	dyndispptr->tqexp = 10;
+	dyndispptr->slpret = 10;
+	dyndispptr->quantum = 10;
 
 
 

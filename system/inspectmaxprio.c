@@ -18,7 +18,7 @@ pri16 inspectmaxprio(
 
     mask = disable();
     
-    for(i = 9; i >= 0; i--) {
+    for(i = 10; i >= 0; i--) {
         dynptr = &dynqueue[i];
         if(dynptr->count){
             // success

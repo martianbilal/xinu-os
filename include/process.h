@@ -45,7 +45,7 @@
 
 
 /* Starvation prevention flags */
-#define STARVATIONPREVENT 1			/* 1 to enable starvation prevention, 0 to disable */
+#define STARVATIONPREVENT 0		/* 1 to enable starvation prevention, 0 to disable */
 #define STARVATIONPERIOD 1 		/* starvation period in milliseconds */
 // #define STARVATIONPERIOD 100 		/* starvation period in milliseconds */
 // #define STARVATIONTHRESHOLD 500		/* starvation threshold in milliseconds */
