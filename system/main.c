@@ -5,7 +5,7 @@
 process	main(void)
 {
 
-	int i = 0;
+	// int i = 0;
     
     	kprintf("\nHello World!\n");
     	kprintf("\nI'm the first XINU app and running function main() in system/main.c.\n");
@@ -73,14 +73,14 @@ process	main(void)
 	
 
 	// BENCHMARK C
-	kprintf("Running 4 cpubound + iobound processes \n\n");
-	kprintf("type,pid,totcpu,usercpu,avgresp,maxresp,ctxcount,typ1,typ2\n");
-	for(i = 0; i < 4; i++) {
-		resume(createtsx(iobound, 1024, "cpubound", 0));
-	}
-	for(i = 0; i < 4; i++) {
-		resume(createtsx(cpubound, 1024, "iobound", 0));
-	}
+	// kprintf("Running 4 cpubound + iobound processes \n\n");
+	// kprintf("type,pid,totcpu,usercpu,avgresp,maxresp,ctxcount,typ1,typ2\n");
+	// for(i = 0; i < 4; i++) {
+	// 	resume(createtsx(iobound, 1024, "cpubound", 0));
+	// }
+	// for(i = 0; i < 4; i++) {
+	// 	resume(createtsx(cpubound, 1024, "iobound", 0));
+	// }
 
 
 	// BENCHMARK D

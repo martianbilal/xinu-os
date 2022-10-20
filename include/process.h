@@ -98,7 +98,7 @@ extern	uint64	currstart;	/* Starting time of currently running process */
 extern	uint64	currstop;	/* Stopping time of currently running process */
 
 
-#define DEBUG_BILAL 3
+#define DEBUG_BILAL 0
 
 #if defined(DEBUG_BILAL) && DEBUG_BILAL > 0
 	#define dbg_pr(fmt, args...) kprintf("\n DEBUG: %s:%d:%s(): " fmt, \
