@@ -46,18 +46,7 @@ syscall	sleepms(
 		return SYSERR;
 	}
 
-
-	proctab[currpid].prstate = PR_SLEEP;	
-
-	/* Promote the process before blocking */
-	#ifdef DYN_SCHED
-	// dbg_pr("[DYN sched]promoting pid : %d from %d ", currpid, proctab[currpid].prprio);
-	if(proctab[currpid].prprio != 10) {
-		proctab[currpid].prprio = getslpret(proctab[currpid].prprio);
-	}
-	// dbg_pr("to %d\n", proctab[currpid].prprio);
-	#endif
-	
+	proctab[currpid].prstate = PR_SLEEP;
 	resched();
 	restore(mask);
 	return OK;

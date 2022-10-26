@@ -8,7 +8,6 @@
  */
 void	wakeup(void)
 {
-	
 	/* Awaken all processes that have no more time to sleep */
 
 	resched_cntl(DEFER_START);

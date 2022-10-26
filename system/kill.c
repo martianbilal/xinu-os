@@ -34,9 +34,6 @@ syscall	kill(
 	switch (prptr->prstate) {
 	case PR_CURR:
 		prptr->prstate = PR_FREE;	/* Suicide */
-		// currstop = getticks();
-		// dbg_pr("[id : %d] prtotalcpu : %u", currpid, prptr->prtotalcpu);
-		// prptr->prtotalcpu = prptr->prtotalcpu + ((currstop - currstart) / 389);
 		resched();
 
 	case PR_SLEEP:

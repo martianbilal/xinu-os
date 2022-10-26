@@ -39,38 +39,6 @@ extern	syscall	control(did32, int32, int32, int32);
 /* in file create.c */
 extern	pid32	create(void *, uint32, pri16, char *, uint32, ...);
 
-/* in file cpubound.c */
-extern	void	cpubound(void);
-
-/* in file iobound.c */
-extern	void	iobound(void);
-
-
-/* in file dydisp.c */
-extern unsigned short getquantum(pri16);
-extern unsigned short gettqexp(pri16);
-extern unsigned short getslpret(pri16);
-
-
-/* in file creatertx.c */
-extern pid32 creatertx(void *, uint32, pri16, char *, uint32, ...);
-
-/* in file createtsx.c */
-extern	pid32	createtsx(void *, uint32, char *, uint32, ...);
-
-/* in file inspectmaxprio.c */
-extern	pri16	inspectmaxprio(void);
-
-/* in file extractdynq.c */
-extern	short	extractdynq(void);
-
-/* in file insertdynq.c */
-extern	short	insertdynq(pri16, pid32);
-
-/* in file preventstarvation.c */
-void preventstarvation(void);
-
-
 /* in file ctxsw.S */
 extern	void	ctxsw(void *, void *);
 
@@ -623,15 +591,6 @@ extern	status	udp_release(uid32);
 extern	void	udp_ntoh(struct netpacket *);
 extern	void	udp_hton(struct netpacket *);
 
-
-/* in file resptime.c */
-extern	syscall	resptime(pid32);
-
-/* in file totcpu.c */
-extern	syscall	totcpu(pid32);
-
-/* in file usercpu.c */
-extern	syscall	usercpu(pid32);
 
 /* in file unsleep.c */
 extern	syscall	unsleep(pid32);

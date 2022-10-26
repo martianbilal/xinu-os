@@ -17,9 +17,6 @@ local	process startup(void);	/* Process to finish startup tasks	*/
 
 /* Declarations of major kernel variables */
 
-
-struct	tsx_disp	dyndisp[11];	/* dynamic scheduler dispatch table */
-struct	mfeedbqx	dynqueue[11];	/* dynamic scheduler queue */
 struct	procent	proctab[NPROC];	/* Process table			*/
 struct	sentry	semtab[NSEM];	/* Semaphore table			*/
 struct	memblk	memlist;	/* List of free memory blocks		*/
@@ -28,8 +25,6 @@ struct	memblk	memlist;	/* List of free memory blocks		*/
 
 int	prcount;		/* Total number of live processes	*/
 pid32	currpid;		/* ID of currently executing process	*/
-uint64	currstart; 
-uint64	currstop; 
 
 /* Control sequence to reset the console colors and cusor positiion	*/
 
@@ -89,18 +84,10 @@ void	nulluser()
 	//net_init();
 
 	/* Create a process to finish startup and start main */
-	#ifndef DYN_SCHED
-	dbg_pr("DYN_SCHED is undefined \n");
-	dbg_pr("starting the startup process with 20 priority \n");
-	
+
 	resume(create((void *)startup, INITSTK, INITPRIO,
 					"Startup process", 0, NULL));
-	#else
-	dbg_pr("DYN_SCHED is defined \n");
-	dbg_pr("starting the startup process \n");
-	resume(create((void *)startup, INITSTK, 9,
-					"Startup process", 0, NULL));
-	#endif
+
 	/* Become the Null process (i.e., guarantee that the CPU has	*/
 	/*  something to run when no other process is ready to execute)	*/
 
@@ -143,35 +130,12 @@ local process	startup(void)
 
 	/* Create a process to execute function main() */
 
-	#ifndef DYN_SCHED
-	dbg_pr("creating the main process with pririty 20\n");
 	resume(create((void *)main, INITSTK, INITPRIO,
 					"Main process", 0, NULL));
-	#else
-	dbg_pr("creating the main process with pririty 9\n");	
-	resume(create((void *)main, INITSTK, 9,
-					"Main process", 0, NULL));
-	#endif
 
 	/* Startup process exits at this point */
 
 	return OK;
-}
-
-int max_two(int a, int b) {
-	if (a > b) {
-		return a;
-	} else {
-		return b;
-	}
-}
-
-int min_two(int a, int b) {
-	if (a < b) {
-		return a;
-	} else {
-		return b;
-	}
 }
 
 
@@ -186,9 +150,6 @@ static	void	sysinit()
 	int32	i;
 	struct	procent	*prptr;		/* Ptr to process table entry	*/
 	struct	sentry	*semptr;	/* Ptr to semaphore table entry	*/
-	struct	tsx_disp	*dyndispptr;	/* Ptr to dynamic dispatch table entry */
-	struct	mfeedbqx	*dynqueueptr;	/* Ptr to dynamic queue entry */
-
 
 	/* Platform Specific Initialization */
 
@@ -227,51 +188,15 @@ static	void	sysinit()
 		prptr->prprio = 0;
 	}
 
-	/* Initialize priority queue entries */
-
-	for (i = 0; i < 11; i++) {
-		dynqueueptr = &dynqueue[i];
-		dynqueueptr->head = NULL;
-		dynqueueptr->tail = NULL;
-		dynqueueptr->count = 0;
-	}
-
-	/* Initialize dispatch table entries */
-
-	for (i = 0; i < 10; i++) {
-		dyndispptr = &dyndisp[i];
-		dyndispptr->tqexp = max_two(0, i-1);
-		dyndispptr->slpret = min_two(9, i+1);
-		dyndispptr->quantum = 100 - (i * 10);
-	}
-
-	// for real time scheduling 
-	dyndispptr = &dyndisp[10];
-	dyndispptr->tqexp = 10;
-	dyndispptr->slpret = 10;
-	dyndispptr->quantum = 10;
-
-
-
 	/* Initialize the Null process entry */	
 
 	prptr = &proctab[NULLPROC];
 	prptr->prstate = PR_CURR;
-	currstart = getticks();	/* get the ticks at the current */
-	prptr->prprio = -1;
+	prptr->prprio = 0;
 	strncpy(prptr->prname, "prnull", 7);
 	prptr->prstkbase = getstk(NULLSTK);
 	prptr->prstklen = NULLSTK;
-	prptr->prtotalresponse = 0;
 	prptr->prstkptr = 0;
-	prptr->prusercpu = 0;
-	prptr->prtotalcpu = 0;
-	prptr->prreadystart = 0;
-	prptr->prcurrcount = 0;
-	prptr->prmaxresponse = 0;
-	prptr->useprevtimeslice = 0;
-	prptr->prevtimeslice = 0;
-
 	currpid = NULLPROC;
 	
 	/* Initialize semaphores */
