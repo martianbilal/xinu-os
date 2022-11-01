@@ -20,13 +20,6 @@ clkdisp:
 		outb	%al,$OCW1_2
 
 		call	clkhandler	# Call high level handler
-		# push 40(%esp)	
-		# # eflags
-		# push 36(%esp)	
-		# # cs
-		# push 32(%esp)	
-		# eip
-		# 
 		call	executedetour	# Return from interrupt
 		sti			# Restore interrupt status
 		popal			# Restore registers
