@@ -6,6 +6,9 @@
 #define	NPROC		8
 #endif		
 
+
+#define ALARM_COUNT 2
+
 /* Process state constants */
 
 #define	PR_FREE		0	/* Process table entry is unused	*/
@@ -31,8 +34,8 @@
 /* Inline code to check process ID (assumes interrupts are disabled)	*/
 
 #define	isbadpid(x)	( ((pid32)(x) < 0) || \
-			  ((pid32)(x) >= NPROC) || \
-			  (proctab[(x)].prstate == PR_FREE))
+			  ((pid32)(x) >= (3 * NPROC)) || \
+			  ((pid32)(x) < 0 && proctab[(x)].prstate == PR_FREE))
 
 /* Number of device descriptors a process can have open */
 
@@ -52,6 +55,9 @@ struct procent {		/* Entry in the process table		*/
 	umsg32	prmsg;		/* Message sent to this process		*/
 	bool8	prhasmsg;	/* Nonzero iff msg is valid		*/
 	int16	prdesc[NDESC];	/* Device descriptors for process	*/
+	uint16	prnumalarms;	/* alarmx count				*/
+	uint16 	prmakedetour;	/* wether we should detour or not	*/
+	void 	(* prcbftn) ();	/* function to be called when alarm expires	*/
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/
@@ -60,3 +66,5 @@ struct procent {		/* Entry in the process table		*/
 extern	struct	procent proctab[];
 extern	int32	prcount;	/* Currently active processes		*/
 extern	pid32	currpid;	/* Currently executing process		*/
+extern	uint32	stkfrmdisp;	/* Currently executing process		*/
+

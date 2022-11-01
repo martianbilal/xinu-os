@@ -90,6 +90,13 @@ extern	void	trap(int32, long *);
 /* in file exception.c */
 extern  void exception(int32, int32*);
 
+
+/* in file executedetour.c */
+extern void executedetour(void);
+
+/* in file alarmx.c */
+extern syscall	alarmx(uint32, void (* ftn) (void));
+
 /* in file freebuf.c */
 extern	syscall	freebuf(char *);
 

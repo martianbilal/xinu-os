@@ -2,6 +2,11 @@
 
 #include <xinu.h>
 
+void printsomething(){
+	kprintf("printsomething\n");
+	return;
+}
+
 process	main(void)
 {
     
@@ -26,6 +31,8 @@ process	main(void)
 	// 	kprintf("\n\nMain process recreating shell\n\n");
 	// 	resume(create(shell, 4096, 20, "shell", 1, CONSOLE));
 	// }
+	alarmx(2, NULL);
+
 	return OK;
     
 }

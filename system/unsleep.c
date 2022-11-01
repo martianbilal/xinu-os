@@ -37,6 +37,8 @@ status	unsleep(
 	/* Increment delay of next process if such a process exists */
 
 	pidnext = queuetab[pid].qnext;
+	// [BILAL] change for the updated the queuetab range 
+	// if (pidnext < (3*NPROC)) {
 	if (pidnext < NPROC) {
 		queuetab[pidnext].qkey += queuetab[pid].qkey;
 	}
