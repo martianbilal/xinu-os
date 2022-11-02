@@ -32,7 +32,7 @@ syscall	alarmx(
 	prptr = &proctab[currpid];
 
 	
-	if (isbadalarmX(timeval)) {
+	if (isbadalarmX(timeval) || ftn == NULL) {
 		restore(mask);
 		return SYSERR;
 	}
@@ -57,7 +57,7 @@ syscall	alarmx(
 
 	// setting the pidalarm value 
 	// if 0 alarms, NPROC + currpid, else (no. of alarms + 1)*NPROC + currpid + 1
-	pidalarm = (prptr->prnumalarms) * NPROC + NPROC + currpid;
+	pidalarm = (prptr->prnumalarms) * NPROC + currpid;
 	
 	// adding the alarm to the sleep queue
 	ret = insertd(pidalarm, sleepq, timeval);

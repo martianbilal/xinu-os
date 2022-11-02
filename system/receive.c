@@ -20,6 +20,7 @@ umsg32	receive(void)
 	}
 	msg = prptr->prmsg;		/* Retrieve message		*/
 	prptr->prhasmsg = FALSE;	/* Reset message flag		*/
+	executedetour2();
 	restore(mask);
 	return msg;
 }

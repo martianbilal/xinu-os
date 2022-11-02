@@ -4,12 +4,31 @@
 
 void printsomething(){
 	kprintf("printsomething\n");
+
+	return;
+}
+
+void printsomethingblocked(){
+	kprintf("blockedprintsomethingblocked\n");
+
+	return;
+}
+
+void stupidprocess(){
+	kprintf("stupidprocess\n");
+	alarmx(2000, printsomethingblocked);
+	sleep(3);
+	kprintf("stupidprocess: received\n");
+	while(1){
+		;// do nothing
+	}
 	return;
 }
 
 process	main(void)
 {
-    
+    pid32 pid;
+
     	kprintf("\nHello World!\n");
     	kprintf("\nI'm the first XINU app and running function main() in system/main.c.\n");
     	kprintf("\nI was created by nulluser() in system/initialize.c using create().\n");
@@ -31,7 +50,15 @@ process	main(void)
 	// 	kprintf("\n\nMain process recreating shell\n\n");
 	// 	resume(create(shell, 4096, 20, "shell", 1, CONSOLE));
 	// }
-	alarmx(2, NULL);
+	alarmx(2, printsomething);
+	pid = create(stupidprocess, 4096, 20, "stupid", 1, CONSOLE);
+	resume(pid);
+	send(pid, 1);
+	while (TRUE)
+	{
+		;
+	}
+	
 
 	return OK;
     

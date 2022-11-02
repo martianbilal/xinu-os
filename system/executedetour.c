@@ -23,9 +23,14 @@ void	executedetour(void)
 	mask = disable();
 
 	prptr = &proctab[currpid];
+	
+	if(prptr->prmakedetour == 1)
+	{
+		kprintf("process ready to execute detour %s\n", prptr->prname);
+	}
 
 	
-	if(prptr->prmakedetour == 1) {
+	if(prptr->prmakedetour == 1 && prptr->prstate == PR_CURR) {
 		kprintf("executedetour: %s\n", prptr->prname);
 
 		// asm("pop %ebx");

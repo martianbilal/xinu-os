@@ -22,6 +22,7 @@ void	wakeup(void)
 			// [BILAL] extract actual pid first
 			prptr = &proctab[pid % NPROC];
 			kprintf("[DBG] got a wakeup call for alarm process %s\n", prptr->prname);
+			kprintf("[DBG] pid %d\n", pid);
 			prptr->prmakedetour = 1;
 			prptr->prnumalarms = prptr->prnumalarms - 1;
 
