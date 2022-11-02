@@ -25,7 +25,14 @@ void	wakeup(void)
 			kprintf("[DBG] pid %d\n", pid);
 			prptr->prmakedetour = 1;
 			prptr->prnumalarms = prptr->prnumalarms - 1;
-			ready(pid % NPROC);
+			if (prptr->prstate != PR_READY) {
+				kprintf("[DBG] currpid : %d\n", currpid);
+				unsleep(pid % NPROC);
+				if(prptr->prstate == PR_SUSP) {
+					resume(pid % NPROC);
+				}
+				ready(pid % NPROC);
+			}
 
 			// (*prptr->prcbftn)();
 		}

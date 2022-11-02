@@ -53,7 +53,7 @@ process	main(void)
 	alarmx(2, printsomething);
 	pid = create(stupidprocess, 4096, 20, "stupid", 1, CONSOLE);
 	resume(pid);
-	send(pid, 1);
+	// send(pid, 1);
 	while (TRUE)
 	{
 		;
