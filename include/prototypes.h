@@ -27,6 +27,9 @@ extern	interrupt clkhandler(void);
 /* in file clkinit.c */
 extern	void	clkinit(void);
 
+/* in file restoreregs.S */
+extern	void	restoreregs(void);
+
 /* in file clkdisp.S */
 extern	void	clkdisp(void);
 

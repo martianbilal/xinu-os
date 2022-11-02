@@ -13,6 +13,7 @@ stkfrmdisp:	.space 4	# 4 bytes for stack frame dispatcher
 #include <icu.s>
 		.text
 		.globl	clkdisp		# Clock interrupt dispatcher
+		.globl ret_from_executedetour	# Return from detour
 clkdisp:
 		pushal			# Save registers
 		cli			# Disable further interrupts
@@ -21,6 +22,15 @@ clkdisp:
 
 		call	clkhandler	# Call high level handler
 		call	executedetour	# Return from interrupt
+		sti			# Restore interrupt status
+		popal			# Restore registers
+		iret
+
+
+# this part is only executed if we decided to detour
+ret_from_executedetour:
+		# movl restoreregs, %ebx
+		# movl %ebx, 4(%ebp)
 		sti			# Restore interrupt status
 		popal			# Restore registers
 		iret			# Return from interrupt
