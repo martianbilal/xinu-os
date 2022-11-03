@@ -26,12 +26,12 @@ void	executedetour(void)
 	
 	if(prptr->prmakedetour == 1)
 	{
-		kprintf("process ready to execute detour %s\n", prptr->prname);
+		// kprintf("process ready to execute detour %s\n", prptr->prname);
 	}
 
 	
 	if(prptr->prmakedetour == 1 && prptr->prstate == PR_CURR) {
-		kprintf("executedetour: %s\n", prptr->prname);
+		// kprintf("executedetour: %s\n", prptr->prname);
 
 		// asm("pop %ebx");
 		// asm("mov %ebx, prev_sp");
@@ -55,11 +55,11 @@ void	executedetour(void)
 		asm("movl %ebx, prev_sp");
 
 
-		kprintf("prev_cs : 0x%04X\n", prev_cs);
-		kprintf("prev_ip 0x%04X\n", prev_ip);
-		kprintf("prev_eflags 0x%04X\n", prev_eflags);
-		kprintf("prev_sp 0x%04X\n", prev_sp);
-		kprintf("handler 0x%04X\n", prptr->prcbftn);
+		// kprintf("prev_cs : 0x%04X\n", prev_cs);
+		// kprintf("prev_ip 0x%04X\n", prev_ip);
+		// kprintf("prev_eflags 0x%04X\n", prev_eflags);
+		// kprintf("prev_sp 0x%04X\n", prev_sp);
+		// kprintf("handler 0x%04X\n", prptr->prcbftn);
 		prptr->prmakedetour = 0;
 
 
@@ -68,7 +68,7 @@ void	executedetour(void)
 		rest_ip = (unsigned long) restoreregs;
 		
 		// prptr->prcbftn();
-		kprintf("mod prev_ip 0x%04X\n", prptr->prcbftn);
+		// kprintf("mod prev_ip 0x%04X\n", prptr->prcbftn);
 		// asm("movl prev_ip, %ebx");
 		// asm("movl %ebx, 40(%ebp)");
 		
@@ -103,8 +103,8 @@ void	executedetour(void)
 		// asm("movl %ebx, 20(%ebp)");
 
 
-		kprintf("address of restoreregs : 0x%04X\n", restoreregs);
-		kprintf("address of handler : 0x%04X\n", prptr->prcbftn);
+		// kprintf("address of restoreregs : 0x%04X\n", restoreregs);
+		// kprintf("address of handler : 0x%04X\n", prptr->prcbftn);
 
 		asm("jmp ret_from_executedetour");
 		asm("sti");
@@ -116,7 +116,7 @@ void	executedetour(void)
 		// asm("mov 0, %ebx");
 		// // asm("pop %ebx");
 		// asm("ret");
-		kprintf("reached \n");
+		// kprintf("reached \n");
 
 	} else {
 		restore(mask);

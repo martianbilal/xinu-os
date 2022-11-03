@@ -445,6 +445,9 @@ extern	syscall	read(did32, char *, uint32);
 /* in file ready.c */
 extern	status	ready(pid32);
 
+/* in file receivex.c */
+extern syscall receivex(pid32 *pidptr, char *buf, uint16 len);
+
 /* in file receive.c */
 extern	umsg32	receive(void);
 
@@ -525,6 +528,9 @@ extern	syscall	semdelete(sid32);
 
 /* in file semreset.c */
 extern	syscall	semreset(sid32, int32);
+
+/* in file sendx.c */
+extern syscall sendx(pid32 pid, char *buf, uint16 len);
 
 /* in file send.c */
 extern	syscall	send(pid32, umsg32);

@@ -61,7 +61,7 @@ syscall	alarmx(
 	
 	// adding the alarm to the sleep queue
 	ret = insertd(pidalarm, sleepq, timeval);
-	kprintf("[DBG] alarmx: inserted alarm %d in sleepq with key %d for %d and got result : %d\n", pidalarm, timeval, currpid, ret);
+	// kprintf("[DBG] alarmx: inserted alarm %d in sleepq with key %d for %d and got result : %d\n", pidalarm, timeval, currpid, ret);
 
 	restore(mask);
 	return OK;

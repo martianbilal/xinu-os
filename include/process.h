@@ -11,14 +11,15 @@
 
 /* Process state constants */
 
-#define	PR_FREE		0	/* Process table entry is unused	*/
-#define	PR_CURR		1	/* Process is currently running		*/
-#define	PR_READY	2	/* Process is on ready queue		*/
-#define	PR_RECV		3	/* Process waiting for message		*/
-#define	PR_SLEEP	4	/* Process is sleeping			*/
-#define	PR_SUSP		5	/* Process is suspended			*/
-#define	PR_WAIT		6	/* Process is on semaphore queue	*/
-#define	PR_RECTIM	7	/* Process is receiving with timeout	*/
+#define	PR_FREE			0	/* Process table entry is unused	*/
+#define	PR_CURR			1	/* Process is currently running		*/
+#define	PR_READY		2	/* Process is on ready queue		*/
+#define	PR_RECV			3	/* Process waiting for message		*/
+#define	PR_SLEEP		4	/* Process is sleeping			*/
+#define	PR_SUSP			5	/* Process is suspended			*/
+#define	PR_WAIT			6	/* Process is on semaphore queue	*/
+#define	PR_RECTIM		7	/* Process is receiving with timeout	*/
+#define PR_SENDBLOCK 	8	/* Process is blocked on send operation */
 
 /* Miscellaneous process definitions */
 
@@ -58,6 +59,12 @@ struct procent {		/* Entry in the process table		*/
 	uint16	prnumalarms;	/* alarmx count				*/
 	uint16 	prmakedetour;	/* wether we should detour or not	*/
 	void 	(* prcbftn) ();	/* function to be called when alarm expires	*/
+	char	prrecvbuf[IPCX_MAXLEN];	/* buffer for receiving messages	*/
+	char	prsndbuf[IPCX_MAXLEN];	/* buffer for receiving messages	*/
+	uint16 	prrecvlen;	/* length of the message received	*/
+	pid32	prsenderpid;	/* pid of the sender of the message	*/
+	pid32	prblockedsender;	/* pid of blocked sender	*/
+	pid32	prblockonreceiver;	/* pid of receiver where this sender is blocked	*/
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

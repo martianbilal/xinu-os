@@ -16,8 +16,8 @@ void printsomethingblocked(){
 
 void stupidprocess(){
 	kprintf("stupidprocess\n");
-	alarmx(2000, printsomethingblocked);
-	sleep(3);
+	alarmx(100, printsomethingblocked);
+	sleep(2.5);
 	kprintf("stupidprocess: received\n");
 	while(1){
 		;// do nothing

@@ -52,6 +52,13 @@ pid32	create(
 	prptr->prnumalarms = 0;
 	prptr->prmakedetour = 0;
 	prptr->prcbftn = NULL;
+	prptr->prrecvlen = 0;
+	prptr->prsenderpid = 0;
+	prptr->prblockedsender = 0;
+	prptr->prblockonreceiver = 0;
+	prptr->prrecvbuf[0] = NULL;
+	prptr->prsndbuf[0] = NULL;
+
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/
 	prptr->prdesc[0] = CONSOLE;

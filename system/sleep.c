@@ -16,7 +16,6 @@ syscall	sleep(
 		return SYSERR;
 	}
 	sleepms(1000*delay);
-	executedetour2();
 	return OK;
 }
 
@@ -50,5 +49,6 @@ syscall	sleepms(
 	proctab[currpid].prstate = PR_SLEEP;
 	resched();
 	restore(mask);
+	executedetour2();
 	return OK;
 }

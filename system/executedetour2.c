@@ -15,7 +15,7 @@ void	executedetour2(void)
 	mask = disable();
 
 	prptr = &proctab[currpid];
-	kprintf("process ready to execute detour2 %s\n", prptr->prname);
+	// kprintf("process ready to execute detour2 %s\n", prptr->prname);
 
 	
 	if(prptr->prmakedetour == 1)
