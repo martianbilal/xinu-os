@@ -31,6 +31,21 @@ syscall	sendx(
 	if(prptr->prblockedsender != 0){
 		restore(mask);
 		return SYSERR;
+	}	
+
+	// [BILAL] [TODO] if the receiver buffer is empty copy the message to the receiver buffer
+	if(prptr->prrecvlen == 0){
+		// copy the message to the receiver buffer 
+		for(i = 0; i < len; i++){
+			prptr->prrecvbuf[i] = buf[i];
+		}
+		prptr->prrecvlen = len;
+		prptr->prsenderpid = currpid;
+		// if the receiver is blocked on the sender, ready the receiver
+		if(prptr->prstate == PR_RECV){
+			ready(pid);
+		}
+		goto res;
 	}
 
 	// if the receiver buffer is occupied [not empty] block
@@ -47,7 +62,9 @@ syscall	sendx(
 		resched();
 	} 
 
+
 	
+res:	
 	restore(mask);		/* Restore interrupts */
 	return OK;
 }

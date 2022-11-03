@@ -16,12 +16,13 @@ syscall	receivex(
 	struct	procent *senderptr;		/* Ptr to sender process's table entry	*/
 	struct	procent *recvrptr;		/* Ptr to receiver process's table entry	*/
 	pid32 temppid = 0; // [BILAL] temporary pid to store the sender pid
+	int i = 0; // [BILAL] counter for copying the message
 
 
 
 	mask = disable();
 
-	if (isbadpid(pid) || isbadpid(currpid) || len > IPCX_MAXLEN) {
+	if (isbadpid(*pidptr) || isbadpid(currpid) || len > IPCX_MAXLEN) {
 		restore(mask);
 		return SYSERR;
 	}
@@ -30,10 +31,10 @@ syscall	receivex(
 	// senderptr = &proctab[*pidptr];
 	recvrptr = &proctab[currpid];
 
-	
+
 	// if no message in the buffer and no sender blocked, reciever should block
 	if (recvrptr->prrecvlen == 0 && recvrptr->prblockedsender == 0) {
-		recvrptr>prstate = PR_RECV;
+		recvrptr->prstate = PR_RECV;
 		resched();		/* Block until message arrives	*/
 	}
 
@@ -65,7 +66,7 @@ syscall	receivex(
 		senderptr = &proctab[recvrptr->prblockedsender];
 
 		// copy the message to the user buffer 
-		for(i = 0; i < senderptr->prsendlen; i++){
+		for(i = 0; i < senderptr->prsndlen; i++){
 			recvrptr->prrecvbuf[i] = senderptr->prsndbuf[i];
 		}
 		
@@ -88,5 +89,5 @@ syscall	receivex(
 
 
 	restore(mask);
-	return msg;
+	return OK;
 }
