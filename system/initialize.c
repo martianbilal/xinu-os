@@ -97,13 +97,13 @@ void	nulluser()
 
 	/* Become the Null process (i.e., guarantee that the CPU has	*/
 	/*  something to run when no other process is ready to execute)	*/
-	alarmx(2, testHandler);
+	// alarmx(2, testHandler);
 
 	while (TRUE) {
-		if (handler_ran) {
-			kprintf("handler ran\n");
-			handler_ran = 0;
-		}
+		// if (handler_ran) {
+		// 	kprintf("handler ran\n");
+		// 	handler_ran = 0;
+		// }
 		;		/* Do nothing */
 	}
 

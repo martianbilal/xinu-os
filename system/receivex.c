@@ -36,7 +36,14 @@ syscall	receivex(
 
 	if (recvrptr->prrecvlen == 0 && recvrptr->prblockedsender == 0) 
 	{
-		goto block_resched;
+		// goto block_resched;
+		signal(recvrptr->pripc);
+		// kprintf("[%d] going to block\n", currpid);
+		recvrptr->prstate = PR_RECV;
+		resched();
+		// kprintf("[%d] came out of block\n", currpid);
+		wait(recvrptr->pripc);
+		// kprintf("[%d] got the semaphore\n", currpid);
 	}
 
 	
@@ -93,11 +100,29 @@ syscall	receivex(
 
 block_resched:
 	signal(recvrptr->pripc); // [BILAL] signal the semaphore to be available for the receiver
-	// if no message in the buffer and no sender blocked, reciever should block
-	if (recvrptr->prrecvlen == 0 && recvrptr->prblockedsender == 0) {
-		recvrptr->prstate = PR_RECV;
-		resched();		/* Block until message arrives	*/
-	}
+	// // if no message in the buffer and no sender blocked, reciever should block
+	// if (recvrptr->prrecvlen == 0 && recvrptr->prblockedsender == 0) {
+	// 	recvrptr->prstate = PR_RECV;
+	// 	resched();		/* Block until message arrives	*/
+	// 	if( recvrptr->prrecvlen != 0 ) {
+	// 		// copy the message to the user buffer 
+	// 		for(i = 0; i < len; i++){
+	// 			buf[i] = recvrptr->prrecvbuf[i];
+	// 		}
+	// 		// reset the buffer 
+	// 		recvrptr->prrecvlen = recvrptr->prrecvlen - len;
+	// 		if(recvrptr->prrecvlen < len){
+	// 			recvrptr->prrecvlen = 0;
+	// 		}
+	// 		// communicate the sender pid to the user 
+	// 		*pidptr = recvrptr->prsenderpid;
+
+	// 		if(recvrptr->prrecvlen == 0){
+	// 			// ready for copying the new message
+	// 			recvrptr->prsenderpid = 0;
+	// 		}
+	// 	}
+	// }
 
 	restore(mask);
 	return OK;

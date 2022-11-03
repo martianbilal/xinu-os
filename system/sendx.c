@@ -26,8 +26,10 @@ syscall	sendx(
 	prptr = &proctab[pid];	/* Point to receiving process's table entry	*/
 	senderptr = &proctab[currpid];	/* Point to sender process's table entry	*/
 
-	wait(senderptr->pripc); // [BILAL] wait for the semaphore to be available for the receiver 
-
+	// kprintf("[%d] waiting on the semaphore for %d\n", currpid, pid);
+	wait(prptr->pripc); // [BILAL] wait for the semaphore to be available for the receiver 
+	// kprintf("[%d] got the semaphore for %d\n", currpid, pid);
+	
 	// if another sender is blocked on the receiver return syserr
 	if(prptr->prblockedsender != 0){
 		restore(mask);
@@ -60,12 +62,14 @@ syscall	sendx(
 			senderptr->prsndbuf[i] = buf[i];
 		}
 		senderptr->prsndlen = len;
+		signal(prptr->pripc);
 		resched();
+		wait(prptr->pripc);
 	} 
 
-	signal(prptr->pripc);
 	
 res:
+	signal(prptr->pripc);
 	restore(mask);		/* Restore interrupts */
 	return OK;
 }
