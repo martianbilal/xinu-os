@@ -26,6 +26,7 @@ syscall	sendx(
 	prptr = &proctab[pid];	/* Point to receiving process's table entry	*/
 	senderptr = &proctab[currpid];	/* Point to sender process's table entry	*/
 
+	wait(senderptr->pripc); // [BILAL] wait for the semaphore to be available for the receiver 
 
 	// if another sender is blocked on the receiver return syserr
 	if(prptr->prblockedsender != 0){
@@ -62,9 +63,9 @@ syscall	sendx(
 		resched();
 	} 
 
-
+	signal(prptr->pripc);
 	
-res:	
+res:
 	restore(mask);		/* Restore interrupts */
 	return OK;
 }

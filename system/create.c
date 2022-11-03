@@ -58,6 +58,7 @@ pid32	create(
 	prptr->prblockonreceiver = 0;
 	prptr->prrecvbuf[0] = NULL;
 	prptr->prsndbuf[0] = NULL;
+	prptr->pripc = semcreate(1);
 
 
 	/* Set up stdin, stdout, and stderr descriptors for the shell	*/

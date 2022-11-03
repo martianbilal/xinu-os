@@ -66,6 +66,7 @@ struct procent {		/* Entry in the process table		*/
 	pid32	prsenderpid;	/* pid of the sender of the message	*/
 	pid32	prblockedsender;	/* pid of blocked sender	*/
 	pid32	prblockonreceiver;	/* pid of receiver where this sender is blocked	*/
+	sid32	pripc; 				/* semaphore to block the sender on */
 };
 
 /* Marker for the top of a process stack (used to help detect overflow)	*/

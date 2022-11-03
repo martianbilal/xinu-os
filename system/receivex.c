@@ -17,6 +17,7 @@ syscall	receivex(
 	struct	procent *recvrptr;		/* Ptr to receiver process's table entry	*/
 	pid32 temppid = 0; // [BILAL] temporary pid to store the sender pid
 	int i = 0; // [BILAL] counter for copying the message
+	uint32 shouldblock = 0;
 
 
 
@@ -31,15 +32,18 @@ syscall	receivex(
 	// senderptr = &proctab[*pidptr];
 	recvrptr = &proctab[currpid];
 
+	wait(recvrptr->pripc); // [BILAL] wait for the semaphore to be available for the receiver
 
-	// if no message in the buffer and no sender blocked, reciever should block
-	if (recvrptr->prrecvlen == 0 && recvrptr->prblockedsender == 0) {
-		recvrptr->prstate = PR_RECV;
-		resched();		/* Block until message arrives	*/
+	if (recvrptr->prrecvlen == 0 && recvrptr->prblockedsender == 0) 
+	{
+		goto block_resched;
 	}
 
+	
+
 	// if message in buffer copy to the user 
-	if(recvrptr->prrecvlen != 0){
+	if(recvrptr->prrecvlen != 0)
+	{
 		// copy the message to the user buffer 
 		for(i = 0; i < len; i++){
 			buf[i] = recvrptr->prrecvbuf[i];
@@ -85,8 +89,15 @@ syscall	receivex(
 		ready(*pidptr);
 	
 	}
+	
 
-
+block_resched:
+	signal(recvrptr->pripc); // [BILAL] signal the semaphore to be available for the receiver
+	// if no message in the buffer and no sender blocked, reciever should block
+	if (recvrptr->prrecvlen == 0 && recvrptr->prblockedsender == 0) {
+		recvrptr->prstate = PR_RECV;
+		resched();		/* Block until message arrives	*/
+	}
 
 	restore(mask);
 	return OK;
