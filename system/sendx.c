@@ -7,8 +7,8 @@
  *------------------------------------------------------------------------
  */
 syscall	sendx(
-		pid32 pid, 
-		char *buf, 
+		pid32 pid,
+		char *buf,
 		uint16 len
 	)
 {
@@ -29,6 +29,7 @@ syscall	sendx(
 
 	// if another sender is blocked on the receiver return syserr
 	if(prptr->prblockedsender != 0){
+		restore(mask);
 		return SYSERR;
 	}
 
@@ -42,15 +43,10 @@ syscall	sendx(
 		for(i = 0; i < len; i++){
 			senderptr->prsndbuf[i] = buf[i];
 		}
+		senderptr->prsndlen = len;
 		resched();
 	} 
 
-
-	if (prptr->prhasmsg) {
-		restore(mask);
-		return SYSERR;
-	}
-	
 	
 	restore(mask);		/* Restore interrupts */
 	return OK;

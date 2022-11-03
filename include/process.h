@@ -60,8 +60,9 @@ struct procent {		/* Entry in the process table		*/
 	uint16 	prmakedetour;	/* wether we should detour or not	*/
 	void 	(* prcbftn) ();	/* function to be called when alarm expires	*/
 	char	prrecvbuf[IPCX_MAXLEN];	/* buffer for receiving messages	*/
-	char	prsndbuf[IPCX_MAXLEN];	/* buffer for receiving messages	*/
+	char	prsndbuf[IPCX_MAXLEN];	/* buffer for sending messages	*/
 	uint16 	prrecvlen;	/* length of the message received	*/
+	uint16 	prsendlen;	/* length of the message to be sent	*/
 	pid32	prsenderpid;	/* pid of the sender of the message	*/
 	pid32	prblockedsender;	/* pid of blocked sender	*/
 	pid32	prblockonreceiver;	/* pid of receiver where this sender is blocked	*/
