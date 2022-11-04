@@ -20,12 +20,12 @@ void	executedetour2(void)
 	
 	if(prptr->prmakedetour == 1)
 	{
-		kprintf("process ready to execute detour2 %s\n", prptr->prname);
+		// kprintf("process ready to execute detour2 %s\n", prptr->prname);
 	}
 
 	
 	if(prptr->prmakedetour == 1) {
-		kprintf("executedetour2: %s\n", prptr->prname);
+		// kprintf("executedetour2: %s\n", prptr->prname);
 		prptr->prmakedetour = 0;
 		prptr->prnumalarms = prptr->prnumalarms - 1;
 
